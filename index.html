@@ -1,1324 +1,2449 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#111827">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta name="theme-color" content="#0b1220">
 
 <title>King Yaz-Boz</title>
 
 <style>
+
 :root{
-  --bg:#0f172a;
-  --card:#1e293b;
-  --card2:#334155;
-  --text:#f8fafc;
-  --muted:#94a3b8;
-  --green:#22c55e;
-  --red:#ef4444;
-  --blue:#2563eb;
+--bg:#0b1220;
+--card:#1e293b;
+--card2:#263449;
+--line:#3b4a60;
+--text:#f8fafc;
+--muted:#a8b3c2;
+--green:#22c55e;
+--red:#fb7185;
+--blue:#2563eb;
+--gold:#f59e0b;
 }
 
 *{
-  box-sizing:border-box;
+box-sizing:border-box;
 }
 
 body{
-  margin:0;
-  background:linear-gradient(180deg,#0b1220,#111827);
-  color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+margin:0;
+background:linear-gradient(180deg,#09101d,#111827);
+color:var(--text);
+font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
 .app{
-  max-width:680px;
-  margin:auto;
-  padding:16px 14px 40px;
+max-width:720px;
+margin:auto;
+padding:14px 12px 45px;
 }
 
 .top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
 }
 
 h1{
-  font-size:24px;
-  margin:0;
+font-size:24px;
+margin:0;
 }
 
 h2{
-  font-size:17px;
-  margin:0 0 12px;
+font-size:18px;
+margin:0 0 12px;
 }
 
 h3{
-  margin-top:20px;
+font-size:16px;
+margin-top:20px;
 }
 
 .sub{
-  color:var(--muted);
-  font-size:12px;
+font-size:12px;
+color:var(--muted);
 }
 
 button{
-  border:0;
-  border-radius:12px;
-  padding:11px 14px;
-  font-weight:700;
-  color:white;
-  background:var(--card2);
-  cursor:pointer;
+border:0;
+border-radius:12px;
+padding:11px 14px;
+font-weight:800;
+color:white;
+background:#334155;
+cursor:pointer;
 }
 
 button:active{
-  transform:scale(.98);
+transform:scale(.98);
 }
 
 button:disabled{
-  cursor:not-allowed;
+opacity:.45;
+cursor:not-allowed;
 }
 
 .primary{
-  background:var(--blue);
+background:var(--blue);
 }
 
 .danger{
-  background:#991b1b;
+background:#991b1b;
 }
 
 .ghost{
-  background:transparent;
-  border:1px solid #475569;
+background:transparent;
+border:1px solid #506078;
 }
 
+/* SKOR KARTLARI */
+
 .grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
 .player{
-  background:var(--card);
-  border:1px solid #334155;
-  border-radius:16px;
-  padding:14px;
+background:var(--card);
+border:1px solid var(--line);
+border-radius:17px;
+padding:14px;
+cursor:pointer;
 }
 
-.player .name{
-  font-weight:800;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+.player:active{
+transform:scale(.99);
+}
+
+.name{
+font-weight:850;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .score{
-  font-size:27px;
-  font-weight:900;
-  margin-top:4px;
+font-size:28px;
+font-weight:950;
+margin-top:3px;
 }
 
 .pos{
-  color:var(--green);
+color:var(--green);
 }
 
 .neg{
-  color:#fb7185;
+color:var(--red);
 }
+
+/* PANELLER */
 
 .panel{
-  background:rgba(30,41,59,.9);
-  border:1px solid #334155;
-  border-radius:18px;
-  padding:15px;
-  margin-top:14px;
+background:rgba(30,41,59,.94);
+border:1px solid var(--line);
+border-radius:19px;
+padding:15px;
+margin-top:13px;
 }
 
+.status{
+display:flex;
+justify-content:space-between;
+gap:8px;
+align-items:center;
+}
+
+.progress{
+height:8px;
+background:#0f172a;
+border-radius:20px;
+overflow:hidden;
+margin:9px 0;
+}
+
+.progress>div{
+height:100%;
+background:var(--green);
+width:0;
+transition:width .25s;
+}
+
+/* OYUN BUTONLARI */
+
 .gamegrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
 }
 
 .gamebtn{
-  min-height:55px;
-  background:#263449;
+min-height:55px;
+background:var(--card2);
 }
 
 .gamebtn small{
-  display:block;
-  color:#cbd5e1;
-  font-weight:500;
-  margin-top:3px;
+display:block;
+color:#cbd5e1;
+font-weight:500;
+margin-top:3px;
 }
 
+/* ÇİZELGE */
+
+.chartWrap{
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+}
+
+.chart{
+width:100%;
+min-width:580px;
+border-collapse:collapse;
+font-size:12px;
+}
+
+.chart th{
+background:#0f172a;
+color:#cbd5e1;
+position:sticky;
+top:0;
+z-index:1;
+}
+
+.chart th,
+.chart td{
+padding:9px 6px;
+border-bottom:1px solid #334155;
+text-align:center;
+white-space:nowrap;
+}
+
+.chart th:first-child,
+.chart td:first-child{
+text-align:center;
+}
+
+.chart td.gameName{
+text-align:left;
+font-weight:700;
+}
+
+.chart tr.current{
+background:#1e3a2a;
+}
+
+.chart tr:nth-child(even){
+background:rgba(15,23,42,.22);
+}
+
+.roundNo{
+font-weight:900;
+color:#cbd5e1;
+}
+
+/* GEÇMİŞ */
+
 .history{
-  overflow:auto;
+overflow:auto;
 }
 
 .history table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
+width:100%;
+border-collapse:collapse;
+font-size:12px;
 }
 
 .history th,
 .history td{
-  padding:9px 5px;
-  border-bottom:1px solid #334155;
-  text-align:center;
+padding:8px 4px;
+border-bottom:1px solid #334155;
+text-align:center;
 }
 
 .history th:first-child,
 .history td:first-child{
-  text-align:left;
+text-align:left;
 }
 
+.history button{
+padding:6px 8px;
+}
+
+/* MODAL */
+
 .modal{
-  position:fixed;
-  inset:0;
-  background:rgba(2,6,23,.78);
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  padding:12px;
-  z-index:5;
+position:fixed;
+inset:0;
+background:rgba(2,6,23,.82);
+display:flex;
+align-items:flex-end;
+justify-content:center;
+padding:10px;
+z-index:5;
 }
 
 .modalbox{
-  width:min(680px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:#172033;
-  border:1px solid #475569;
-  border-radius:22px;
-  padding:18px;
+width:min(700px,100%);
+max-height:92vh;
+overflow:auto;
+background:#172033;
+border:1px solid #506078;
+border-radius:22px;
+padding:18px;
 }
 
 .hidden{
-  display:none;
+display:none;
 }
 
 .row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  margin:10px 0;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px;
+margin:10px 0;
 }
 
 .counter{
-  display:flex;
-  align-items:center;
-  gap:7px;
+display:flex;
+align-items:center;
+gap:7px;
 }
 
 .counter button{
-  width:38px;
-  height:38px;
-  padding:0;
-  font-size:20px;
+width:38px;
+height:38px;
+padding:0;
+font-size:20px;
 }
 
 .num{
-  width:34px;
-  text-align:center;
-  font-weight:900;
-  font-size:18px;
+width:34px;
+text-align:center;
+font-weight:900;
+font-size:18px;
 }
 
 input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #475569;
-  background:#0f172a;
-  color:white;
-  font-size:16px;
+width:100%;
+padding:12px;
+border-radius:10px;
+border:1px solid #506078;
+background:#0f172a;
+color:#fff;
+font-size:16px;
 }
 
-input[type="checkbox"]{
-  width:24px;
-  height:24px;
-}
-
-input[type="number"]{
-  width:100%;
+input[type=checkbox]{
+width:23px;
+height:23px;
 }
 
 label{
-  display:block;
-  color:#cbd5e1;
-  font-size:13px;
-  margin:10px 0 5px;
+display:block;
+color:#cbd5e1;
+font-size:13px;
+margin:10px 0 5px;
 }
 
 .actions{
-  display:flex;
-  gap:8px;
-  margin-top:15px;
+display:flex;
+gap:8px;
+margin-top:15px;
 }
 
 .actions button{
-  flex:1;
+flex:1;
+}
+
+.warn,
+.ok,
+.info{
+padding:10px;
+border-radius:10px;
+margin-top:10px;
+font-size:13px;
 }
 
 .warn{
-  background:#3f1d1d;
-  border:1px solid #7f1d1d;
-  padding:10px;
-  border-radius:10px;
-  color:#fecaca;
-  margin-top:10px;
-  font-size:13px;
+background:#3f1d1d;
+border:1px solid #7f1d1d;
+color:#fecaca;
 }
 
 .ok{
-  background:#12351f;
-  border:1px solid #166534;
-  padding:10px;
-  border-radius:10px;
-  color:#bbf7d0;
-  margin-top:10px;
-  font-size:13px;
+background:#12351f;
+border:1px solid #166534;
+color:#bbf7d0;
 }
+
+.info{
+background:#172554;
+border:1px solid #1d4ed8;
+color:#bfdbfe;
+}
+
+/* DETAY */
+
+.detailrow{
+display:flex;
+justify-content:space-between;
+padding:9px 0;
+border-bottom:1px solid #334155;
+}
+
+.winner{
+font-size:18px;
+font-weight:900;
+text-align:center;
+padding:11px;
+border-radius:12px;
+background:#3b2a0b;
+border:1px solid #8a6500;
+margin-bottom:12px;
+}
+
+/* TELEFON */
 
 @media(max-width:420px){
-  .app{
-    padding:12px 10px;
-  }
 
-  .gamebtn{
-    font-size:13px;
-  }
-
-  .score{
-    font-size:23px;
-  }
+h1{
+font-size:21px;
 }
+
+.score{
+font-size:24px;
+}
+
+.gamebtn{
+font-size:13px;
+}
+
+.panel{
+padding:13px;
+}
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-  <div class="top">
 
-    <div>
-      <h1>🃏 KING YAZ-BOZ</h1>
-      <div class="sub">
-        4 kişilik klasik King skor takip
-      </div>
-    </div>
+<!-- BAŞLIK -->
 
-    <button class="ghost" onclick="settings()">
-      ⚙️
-    </button>
+<div class="top">
 
-  </div>
+<div>
 
-  <!-- OYUNCULAR -->
+<h1>🃏 KING YAZ-BOZ</h1>
 
-  <div id="players" class="grid"></div>
+<div class="sub">
+4 kişilik klasik King skor takip
+</div>
 
+</div>
 
-  <!-- EL EKLE -->
+<button
+class="ghost"
+onclick="settings()">
 
-  <div class="panel">
+⚙️
 
-    <h2>El Ekle</h2>
+</button>
 
-    <div class="gamegrid">
-
-      <button class="gamebtn"
-              onclick="openGame('spade')">
-        ♠️ Maça Koz
-        <small>+50 / el</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('heart')">
-        ♥️ Kupa Koz
-        <small>+50 / el</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('diamond')">
-        ♦️ Karo Koz
-        <small>+50 / el</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('club')">
-        ♣️ Sinek Koz
-        <small>+50 / el</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('trickless')">
-        🚫 El Almaz
-        <small>-50 / el</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('hearts')">
-        ♥️ Kupa Almaz
-        <small>-30 / kupa</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('queens')">
-        👸 Kız Almaz
-        <small>-100 / kız</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('men')">
-        🤵 Erkek Almaz
-        <small>-60 / V+K</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('last2')">
-        2️⃣ Son İki
-        <small>-180 / el</small>
-      </button>
-
-      <button class="gamebtn"
-              onclick="openGame('rifki')">
-        ♥️ Rıfkı
-        <small>-320</small>
-      </button>
-
-    </div>
-
-  </div>
+</div>
 
 
-  <!-- GEÇMİŞ -->
+<!-- İLERLEME -->
 
-  <div class="panel">
+<div
+class="panel"
+style="margin-top:0">
 
-    <div style="display:flex;justify-content:space-between;align-items:center">
+<div class="status">
 
-      <h2>📜 Geçmiş</h2>
+<b>
+Oyun İlerlemesi
+</b>
 
-      <button class="danger"
-              onclick="newGame()">
-        Yeni Oyun
-      </button>
+<span
+id="progressText"
+class="sub">
+0/20 oyun
+</span>
 
-    </div>
+</div>
 
-    <div id="history" class="history"></div>
 
-  </div>
+<div class="progress">
+
+<div
+id="progressBar">
+</div>
+
+</div>
+
+
+<div
+id="balance"
+class="sub">
+</div>
+
+</div>
+
+
+<!-- OYUNCULAR -->
+
+<div
+id="players"
+class="grid"
+style="margin-top:13px">
+</div>
+
+
+<!-- EL EKLE -->
+
+<div class="panel">
+
+<h2>
+El Ekle
+</h2>
+
+
+<div class="gamegrid">
+
+
+<button
+class="gamebtn"
+onclick="openGame('spade')">
+
+♠️ Maça Koz
+
+<small>
++50 / el
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('heart')">
+
+♥️ Kupa Koz
+
+<small>
++50 / el
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('diamond')">
+
+♦️ Karo Koz
+
+<small>
++50 / el
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('club')">
+
+♣️ Sinek Koz
+
+<small>
++50 / el
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('trickless')">
+
+🚫 El Almaz
+
+<small>
+-50 / el
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('hearts')">
+
+♥️ Kupa Almaz
+
+<small>
+-30 / kupa
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('queens')">
+
+👸 Kız Almaz
+
+<small>
+-100 / kız
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('men')">
+
+🤵 Erkek Almaz
+
+<small>
+-60 / V+K
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('last2')">
+
+2️⃣ Son İki
+
+<small>
+-180 / el
+</small>
+
+</button>
+
+
+<button
+class="gamebtn"
+onclick="openGame('rifki')">
+
+♥️ Rıfkı
+
+<small>
+-320
+</small>
+
+</button>
+
+
+</div>
+
+</div>
+
+
+<!-- 20 OYUN ÇİZELGESİ -->
+
+<div class="panel">
+
+<div
+style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+
+<div>
+
+<h2 style="margin-bottom:3px">
+📋 King Çizelgesi
+</h2>
+
+<div class="sub">
+20 oyunluk el takibi
+</div>
+
+</div>
+
+<div
+id="chartCount"
+class="sub">
+0 / 20
+</div>
+
+</div>
+
+
+<div
+class="chartWrap"
+style="margin-top:10px">
+
+<table
+class="chart">
+
+<thead>
+
+<tr>
+
+<th>
+#
+</th>
+
+<th>
+Oyun
+</th>
+
+<th id="th0">
+Oyuncu 1
+</th>
+
+<th id="th1">
+Oyuncu 2
+</th>
+
+<th id="th2">
+Oyuncu 3
+</th>
+
+<th id="th3">
+Oyuncu 4
+</th>
+
+<th>
+İşlem
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody
+id="chartBody">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- GEÇMİŞ -->
+
+<div class="panel">
+
+<div
+style="display:flex;justify-content:space-between;align-items:center">
+
+<h2>
+📜 İşlem Geçmişi
+</h2>
+
+<button
+class="danger"
+onclick="newGame()">
+
+Yeni Oyun
+
+</button>
+
+</div>
+
+
+<div
+id="history"
+class="history">
+</div>
+
+</div>
+
 
 </div>
 
 
 <!-- MODAL -->
 
-<div id="modal" class="modal hidden">
+<div
+id="modal"
+class="modal hidden">
 
-  <div class="modalbox" id="modalbox"></div>
+<div
+class="modalbox"
+id="modalbox">
+</div>
 
 </div>
 
 
 <script>
 
-const DEFAULTS = {
 
-  spade:50,
-  heart:50,
-  diamond:50,
-  club:50,
-
-  trickless:50,
-  hearts:30,
-  queens:100,
-  men:60,
-
-  last2:180,
-  rifki:320
-
-};
+/* =========================
+   PUANLAR
+========================= */
 
 
-const META = {
+const DEFAULTS={
 
-  spade:[
-    '♠️ Maça Koz',
-    13,
-    50
-  ],
+spade:50,
+heart:50,
+diamond:50,
+club:50,
 
-  heart:[
-    '♥️ Kupa Koz',
-    13,
-    50
-  ],
+trickless:50,
+hearts:30,
+queens:100,
+men:60,
 
-  diamond:[
-    '♦️ Karo Koz',
-    13,
-    50
-  ],
-
-  club:[
-    '♣️ Sinek Koz',
-    13,
-    50
-  ],
-
-  trickless:[
-    '🚫 El Almaz',
-    13,
-    50
-  ],
-
-  hearts:[
-    '♥️ Kupa Almaz',
-    13,
-    30
-  ],
-
-  queens:[
-    '👸 Kız Almaz',
-    4,
-    100
-  ],
-
-  men:[
-    '🤵 Erkek Almaz',
-    8,
-    60
-  ],
-
-  last2:[
-    '2️⃣ Son İki',
-    2,
-    180
-  ],
-
-  rifki:[
-    '♥️ Rıfkı',
-    1,
-    320
-  ]
+last2:180,
+rifki:320
 
 };
 
 
-let state =
+/* =========================
+   OYUNLAR
+========================= */
+
+
+const META={
+
+spade:[
+'♠️ Maça Koz',
+13
+],
+
+heart:[
+'♥️ Kupa Koz',
+13
+],
+
+diamond:[
+'♦️ Karo Koz',
+13
+],
+
+club:[
+'♣️ Sinek Koz',
+13
+],
+
+trickless:[
+'🚫 El Almaz',
+13
+],
+
+hearts:[
+'♥️ Kupa Almaz',
+13
+],
+
+queens:[
+'👸 Kız Almaz',
+4
+],
+
+men:[
+'🤵 Erkek Almaz',
+8
+],
+
+last2:[
+'2️⃣ Son İki',
+2
+],
+
+rifki:[
+'♥️ Rıfkı',
+1
+]
+
+};
+
+
+const NEG=[
+
+'trickless',
+'hearts',
+'queens',
+'men'
+
+];
+
+
+/* =========================
+   VERİ
+========================= */
+
+
+let state=
+
 JSON.parse(
-  localStorage.getItem('kingState') || 'null'
+localStorage.getItem('kingState') || 'null'
 )
 ||
 {
-  names:[
-    'Oyuncu 1',
-    'Oyuncu 2',
-    'Oyuncu 3',
-    'Oyuncu 4'
-  ],
 
-  scores:[
-    0,
-    0,
-    0,
-    0
-  ],
+names:[
+'Oyuncu 1',
+'Oyuncu 2',
+'Oyuncu 3',
+'Oyuncu 4'
+],
 
-  history:[],
+scores:[
+0,
+0,
+0,
+0
+],
 
-  rates:{
-    ...DEFAULTS
-  }
+history:[],
+
+rates:{
+...DEFAULTS
+}
+
 };
+
+
+state.rates={
+...DEFAULTS,
+...(state.rates || {})
+};
+
+
+state.history=
+state.history || [];
+
+
+/* =========================
+   KAYDET
+========================= */
 
 
 function save(){
 
-  localStorage.setItem(
-    'kingState',
-    JSON.stringify(state)
-  );
+localStorage.setItem(
+'kingState',
+JSON.stringify(state)
+);
 
-  render();
-
-}
-
-
-function render(){
-
-  document.getElementById('players').innerHTML =
-
-    state.names.map(
-      (name,index)=>`
-
-        <div class="player">
-
-          <div class="name">
-            ${esc(name)}
-          </div>
-
-          <div class="score ${state.scores[index] >= 0 ? 'pos' : 'neg'}">
-
-            ${state.scores[index] > 0 ? '+' : ''}
-            ${state.scores[index]}
-
-          </div>
-
-        </div>
-
-      `
-    ).join('');
-
-
-  const history =
-    state.history;
-
-
-  if(!history.length){
-
-    document.getElementById('history').innerHTML =
-      '<div class="sub">Henüz el kaydedilmedi.</div>';
-
-    return;
-
-  }
-
-
-  document.getElementById('history').innerHTML =
-
-  `<table>
-
-    <thead>
-
-      <tr>
-
-        <th>Oyun</th>
-
-        ${state.names.map(
-          name=>`<th>${esc(name)}</th>`
-        ).join('')}
-
-        <th></th>
-
-      </tr>
-
-    </thead>
-
-    <tbody>
-
-      ${history.map(
-        (item,index)=>`
-
-          <tr>
-
-            <td>
-              ${esc(item.label)}
-            </td>
-
-            ${item.points.map(
-              point=>`
-
-                <td class="${point < 0 ? 'neg' : 'pos'}">
-
-                  ${point > 0 ? '+' : ''}
-                  ${point}
-
-                </td>
-
-              `
-            ).join('')}
-
-            <td>
-
-              <button
-                class="ghost"
-                onclick="undo(${index})">
-
-                ↩
-
-              </button>
-
-            </td>
-
-          </tr>
-
-        `
-      ).join('')}
-
-    </tbody>
-
-  </table>`;
+render();
 
 }
+
+
+/* =========================
+   GÜVENLİ METİN
+========================= */
 
 
 function esc(text){
 
-  return String(text).replace(
-    /[&<>"']/g,
+return String(text).replace(
+/[&<>"']/g,
 
-    m=>({
+m=>({
 
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#039;'
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
 
-    }[m])
+}[m])
 
-  );
+);
 
 }
+
+
+/* =========================
+   RENDER
+========================= */
+
+
+function render(){
+
+
+/* OYUNCU KARTLARI */
+
+document.getElementById(
+'players'
+).innerHTML=
+
+state.names.map(
+
+(name,index)=>`
+
+<div
+class="player"
+onclick="detail(${index})">
+
+<div class="name">
+
+${esc(name)}
+
+</div>
+
+
+<div
+class="score ${state.scores[index]>=0?'pos':'neg'}">
+
+${state.scores[index]>0?'+':''}${state.scores[index]}
+
+</div>
+
+
+<div class="sub">
+
+Detay için dokun
+
+</div>
+
+</div>
+
+`
+
+).join('');
+
+
+/* İLERLEME */
+
+const count=
+state.history.length;
+
+const pct=
+Math.min(
+100,
+count/20*100
+);
+
+
+document.getElementById(
+'progressText'
+).textContent=
+
+`${count}/20 oyun`;
+
+
+document.getElementById(
+'progressBar'
+).style.width=
+
+pct+'%';
+
+
+document.getElementById(
+'chartCount'
+).textContent=
+
+`${count} / 20`;
+
+
+/* TOPLAM PUAN */
+
+const total=
+state.scores.reduce(
+(a,b)=>a+b,
+0
+);
+
+
+document.getElementById(
+'balance'
+).innerHTML=
+
+total===0
+
+?
+
+'<span class="pos">✓ Puan dengesi: 0</span>'
+
+:
+
+`<span class="warn" style="display:block">
+
+⚠️ Puan dengesi:
+
+${total>0?'+':''}${total}
+
+</span>`;
+
+
+/* OYUNCU İSİMLERİ */
+
+for(let i=0;i<4;i++){
+
+document.getElementById(
+'th'+i
+).textContent=
+state.names[i];
+
+}
+
+
+/* ÇİZELGE */
+
+renderChart();
+
+
+/* GEÇMİŞ */
+
+renderHistory();
+
+}
+
+
+/* =========================
+   ÇİZELGE
+========================= */
+
+
+function renderChart(){
+
+const body=
+document.getElementById(
+'chartBody'
+);
+
+
+let html='';
+
+
+for(let i=0;i<20;i++){
+
+const item=
+state.history[i];
+
+
+if(item){
+
+html+=`
+
+<tr
+class="${i===state.history.length-1?'current':''}">
+
+<td class="roundNo">
+
+${i+1}
+
+</td>
+
+
+<td class="gameName">
+
+${esc(item.label)}
+
+</td>
+
+
+${item.points.map(
+
+point=>`
+
+<td
+class="${point<0?'neg':'pos'}">
+
+${point>0?'+':''}${point}
+
+</td>
+
+`
+
+).join('')}
+
+
+<td>
+
+<button
+class="ghost"
+onclick="undo(${i})">
+
+↩
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+else{
+
+html+=`
+
+<tr>
+
+<td
+class="roundNo">
+
+${i+1}
+
+</td>
+
+
+<td
+style="color:#64748b">
+
+— Henüz oynanmadı —
+
+</td>
+
+
+<td>
+—
+</td>
+
+<td>
+—
+</td>
+
+<td>
+—
+</td>
+
+<td>
+—
+</td>
+
+<td>
+—
+</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+
+body.innerHTML=
+html;
+
+}
+
+
+/* =========================
+   GEÇMİŞ
+========================= */
+
+
+function renderHistory(){
+
+const history=
+state.history;
+
+
+if(!history.length){
+
+document.getElementById(
+'history'
+).innerHTML=
+
+'<div class="sub">Henüz el kaydedilmedi.</div>';
+
+return;
+
+}
+
+
+document.getElementById(
+'history'
+).innerHTML=
+
+`
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+#
+</th>
+
+<th>
+Oyun
+</th>
+
+${state.names.map(
+
+name=>
+`<th>${esc(name)}</th>`
+
+).join('')}
+
+<th>
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+${history.map(
+
+(item,index)=>`
+
+<tr>
+
+<td>
+${index+1}
+</td>
+
+
+<td>
+${esc(item.label)}
+</td>
+
+
+${item.points.map(
+
+point=>`
+
+<td
+class="${point<0?'neg':'pos'}">
+
+${point>0?'+':''}${point}
+
+</td>
+
+`
+
+).join('')}
+
+
+<td>
+
+<button
+class="ghost"
+onclick="undo(${index})">
+
+↩
+
+</button>
+
+</td>
+
+</tr>
+
+`
+
+).join('')}
+
+</tbody>
+
+</table>
+
+`;
+
+}
+
+
+/* =========================
+   OYUN AÇ
+========================= */
 
 
 function openGame(type){
 
-  const meta =
-    META[type];
+window._type=
+type;
 
-  const box =
-    document.getElementById('modalbox');
-
-  window._vals =
-    [0,0,0,0];
-
-  window._type =
-    type;
+window._vals=
+[0,0,0,0];
 
 
-  const specialLast =
-    type === 'last2';
-
-  const specialRifki =
-    type === 'rifki';
-
-
-  box.innerHTML = `
-
-    <h2>
-      ${meta[0]}
-    </h2>
-
-    <div class="sub">
-
-      ${
-        specialRifki
-        ?
-        'Rıfkı\'yı alan oyuncuyu seçin.'
-        :
-        specialLast
-        ?
-        'Son iki eli alan iki oyuncuyu seçin.'
-        :
-        'Toplam ' + meta[1] + ' olmalıdır.'
-      }
-
-    </div>
-
-    <div id="entry"></div>
-
-    <div id="msg"></div>
-
-    <div class="actions">
-
-      <button
-        class="ghost"
-        onclick="closeModal()">
-
-        İptal
-
-      </button>
-
-      <button
-        class="primary"
-        id="saveBtn"
-        onclick="commit('${type}')">
-
-        Eli Kaydet
-
-      </button>
-
-    </div>
-
-  `;
+const [
+label,
+total
+]=META[type];
 
 
-  const entry =
-    document.getElementById('entry');
+const special=
+[
+'rifki',
+'last2'
+].includes(type);
 
 
-  if(specialRifki || specialLast){
+document.getElementById(
+'modalbox'
+).innerHTML=
 
-    entry.innerHTML =
+`
 
-      state.names.map(
-        (name,index)=>`
-
-          <div class="row">
-
-            <b>
-              ${esc(name)}
-            </b>
-
-            <input
-              type="checkbox"
-              id="pick${index}"
-              onchange="validateSpecial('${type}')">
-
-          </div>
-
-        `
-      ).join('');
-
-  }
-
-  else{
-
-    entry.innerHTML =
-
-      state.names.map(
-        (name,index)=>`
-
-          <div class="row">
-
-            <b>
-              ${esc(name)}
-            </b>
-
-            <div class="counter">
-
-              <button
-                onclick="changeVal(${index},-1,${meta[1]})">
-
-                −
-
-              </button>
-
-              <div
-                class="num"
-                id="v${index}">
-
-                0
-
-              </div>
-
-              <button
-                onclick="changeVal(${index},1,${meta[1]})">
-
-                +
-
-              </button>
-
-            </div>
-
-          </div>
-
-        `
-      ).join('');
-
-  }
+<h2>
+${label}
+</h2>
 
 
-  validateSpecial(type);
+<div class="sub">
 
-  document
-    .getElementById('modal')
-    .classList
-    .remove('hidden');
+${
+type==='rifki'
+
+?
+
+'Rıfkı’yı alan tek oyuncuyu seçin.'
+
+:
+
+type==='last2'
+
+?
+
+'Son iki eli alan iki oyuncuyu seçin.'
+
+:
+
+'Toplam '+total+' olmalıdır.'
+
+}
+
+</div>
+
+
+<div id="entry">
+</div>
+
+
+<div id="msg">
+</div>
+
+
+<div class="actions">
+
+<button
+class="ghost"
+onclick="closeModal()">
+
+İptal
+
+</button>
+
+
+<button
+class="primary"
+id="saveBtn"
+onclick="commit('${type}')">
+
+Eli Kaydet
+
+</button>
+
+</div>
+
+`;
+
+
+const entry=
+document.getElementById(
+'entry'
+);
+
+
+if(special){
+
+entry.innerHTML=
+
+state.names.map(
+
+(name,index)=>`
+
+<div class="row">
+
+<b>
+${esc(name)}
+</b>
+
+
+<input
+type="checkbox"
+id="pick${index}"
+onchange="validate()">
+
+</div>
+
+`
+
+).join('');
+
+}
+
+else{
+
+entry.innerHTML=
+
+state.names.map(
+
+(name,index)=>`
+
+<div class="row">
+
+<b>
+${esc(name)}
+</b>
+
+
+<div class="counter">
+
+<button
+onclick="changeVal(${index},-1,${total})">
+
+−
+
+</button>
+
+
+<div
+class="num"
+id="v${index}">
+
+0
+
+</div>
+
+
+<button
+onclick="changeVal(${index},1,${total})">
+
++
+
+</button>
+
+</div>
+
+</div>
+
+`
+
+).join('');
 
 }
 
 
-function changeVal(index,delta,max){
-
-  window._vals[index] =
-
-    Math.max(
-      0,
-      Math.min(
-        max,
-        window._vals[index] + delta
-      )
-    );
+validate();
 
 
-  document.getElementById(
-    'v' + index
-  ).textContent =
-    window._vals[index];
-
-
-  validateSpecial(
-    window._type
-  );
+document.getElementById(
+'modal'
+).classList.remove(
+'hidden'
+);
 
 }
 
 
-function validateSpecial(type){
-
-  const meta =
-    META[type];
-
-  let valid =
-    false;
-
-  let message =
-    '';
+/* =========================
+   SAYI DEĞİŞTİR
+========================= */
 
 
-  if(type === 'rifki'){
+function changeVal(
+index,
+delta,
+max
+){
 
-    const count =
-      state.names.filter(
-        (_,index)=>
-          document.getElementById(
-            'pick' + index
-          )?.checked
-      ).length;
+window._vals[index]=
 
-
-    valid =
-      count === 1;
-
-
-    message = valid
-
-      ?
-      '<div class="ok">✓ Tek oyuncu seçildi.</div>'
-
-      :
-      '<div class="warn">⚠️ Rıfkı için tam 1 oyuncu seçilmelidir.</div>';
-
-  }
+Math.max(
+0,
+Math.min(
+max,
+window._vals[index]+delta
+)
+);
 
 
-  else if(type === 'last2'){
+document.getElementById(
+'v'+index
+).textContent=
 
-    const count =
-      state.names.filter(
-        (_,index)=>
-          document.getElementById(
-            'pick' + index
-          )?.checked
-      ).length;
+window._vals[index];
 
 
-    valid =
-      count === 2;
-
-
-    message = valid
-
-      ?
-      '<div class="ok">✓ İki oyuncu seçildi.</div>'
-
-      :
-      '<div class="warn">⚠️ Son İki için tam 2 oyuncu seçilmelidir.</div>';
-
-  }
-
-
-  else{
-
-    const total =
-      window._vals.reduce(
-        (sum,value)=>sum+value,
-        0
-      );
-
-
-    valid =
-      total === meta[1];
-
-
-    message = valid
-
-      ?
-      `<div class="ok">
-        ✓ Toplam ${total}/${meta[1]} — kayıt yapılabilir.
-      </div>`
-
-      :
-      `<div class="warn">
-        ⚠️ Toplam ${total}/${meta[1]}.
-        Tam ${meta[1]} olmalı.
-      </div>`;
-
-  }
-
-
-  const msg =
-    document.getElementById('msg');
-
-
-  if(msg)
-    msg.innerHTML =
-      message;
-
-
-  const button =
-    document.getElementById('saveBtn');
-
-
-  if(button){
-
-    button.disabled =
-      !valid;
-
-    button.style.opacity =
-      valid ? '1' : '.45';
-
-  }
+validate();
 
 }
+
+
+/* =========================
+   KONTROL
+========================= */
+
+
+function validate(){
+
+const type=
+window._type;
+
+const total=
+META[type][1];
+
+let ok=false;
+
+let msg='';
+
+
+if(type==='rifki'){
+
+const c=
+countPicked();
+
+
+ok=
+c===1;
+
+
+msg=
+
+ok
+
+?
+
+'<div class="ok">✓ Tek oyuncu seçildi.</div>'
+
+:
+
+'<div class="warn">⚠️ Tam 1 oyuncu seçilmelidir.</div>';
+
+}
+
+
+else if(type==='last2'){
+
+const c=
+countPicked();
+
+
+ok=
+c===2;
+
+
+msg=
+
+ok
+
+?
+
+'<div class="ok">✓ İki oyuncu seçildi.</div>'
+
+:
+
+'<div class="warn">⚠️ Tam 2 oyuncu seçilmelidir.</div>';
+
+}
+
+
+else{
+
+const sum=
+window._vals.reduce(
+(a,b)=>a+b,
+0
+);
+
+
+ok=
+sum===total;
+
+
+msg=
+
+ok
+
+?
+
+`<div class="ok">
+
+✓ Toplam ${sum}/${total}
+— kayıt yapılabilir.
+
+</div>`
+
+:
+
+`<div class="warn">
+
+⚠️ Toplam ${sum}/${total}.
+Tam ${total} olmalı.
+
+</div>`;
+
+}
+
+
+document.getElementById(
+'msg'
+).innerHTML=
+msg;
+
+
+document.getElementById(
+'saveBtn'
+).disabled=
+!ok;
+
+}
+
+
+/* =========================
+   SEÇİM SAYISI
+========================= */
+
+
+function countPicked(){
+
+return state.names.filter(
+
+(_,i)=>
+
+document.getElementById(
+'pick'+i
+)?.checked
+
+).length;
+
+}
+
+
+/* =========================
+   ELİ KAYDET
+========================= */
 
 
 function commit(type){
 
-  const meta =
-    META[type];
-
-  const points =
-    [0,0,0,0];
+const points=
+[0,0,0,0];
 
 
-  if(type === 'rifki'){
+if(type==='rifki'){
 
-    state.names.forEach(
-      (_,index)=>{
+state.names.forEach(
 
-        if(
-          document.getElementById(
-            'pick' + index
-          ).checked
-        ){
+(_,i)=>{
 
-          points[index] =
-            -state.rates.rifki;
+if(
+document.getElementById(
+'pick'+i
+).checked
+){
 
-        }
-
-      }
-    );
-
-  }
-
-
-  else if(type === 'last2'){
-
-    state.names.forEach(
-      (_,index)=>{
-
-        if(
-          document.getElementById(
-            'pick' + index
-          ).checked
-        ){
-
-          points[index] =
-            -state.rates.last2;
-
-        }
-
-      }
-    );
-
-  }
-
-
-  else{
-
-    const negativeTypes =
-      [
-        'trickless',
-        'hearts',
-        'queens',
-        'men'
-      ];
-
-
-    window._vals.forEach(
-      (value,index)=>{
-
-        const multiplier =
-          negativeTypes.includes(type)
-          ? -1
-          : 1;
-
-
-        points[index] =
-          value *
-          state.rates[type] *
-          multiplier;
-
-      }
-    );
-
-  }
-
-
-  state.scores =
-    state.scores.map(
-      (score,index)=>
-        score + points[index]
-    );
-
-
-  state.history.push({
-
-    label:
-      meta[0],
-
-    points:
-      points
-
-  });
-
-
-  save();
-
-  closeModal();
+points[i]=
+-state.rates.rifki;
 
 }
+
+}
+
+);
+
+}
+
+
+else if(type==='last2'){
+
+state.names.forEach(
+
+(_,i)=>{
+
+if(
+document.getElementById(
+'pick'+i
+).checked
+){
+
+points[i]=
+-state.rates.last2;
+
+}
+
+}
+
+);
+
+}
+
+
+else{
+
+window._vals.forEach(
+
+(value,i)=>{
+
+points[i]=
+
+value*
+state.rates[type]*
+(
+NEG.includes(type)
+?
+-1
+:
+1
+);
+
+}
+
+);
+
+}
+
+
+/* SKORU GÜNCELLE */
+
+state.scores=
+
+state.scores.map(
+
+(score,index)=>
+
+score+points[index]
+
+);
+
+
+/* GEÇMİŞE EKLE */
+
+state.history.push({
+
+label:
+META[type][0],
+
+points:
+points,
+
+type:
+type,
+
+date:
+new Date().toISOString()
+
+});
+
+
+save();
+
+closeModal();
+
+
+/* 20 OYUN BİTTİ */
+
+if(
+state.history.length===20
+){
+
+setTimeout(
+finishScreen,
+150
+);
+
+}
+
+}
+
+
+/* =========================
+   GERİ AL
+========================= */
 
 
 function undo(index){
 
-  if(
-    !confirm(
-      'Bu eli geri almak istediğinizden emin misiniz?'
-    )
-  )
-    return;
+if(
+!confirm(
+'Bu eli geri almak istediğinizden emin misiniz?'
+)
+)
+return;
 
 
-  const item =
-    state.history[index];
+const item=
+state.history[index];
 
 
-  state.scores =
-    state.scores.map(
-      (score,i)=>
-        score - item.points[i]
-    );
+state.scores=
+
+state.scores.map(
+
+(score,k)=>
+
+score-item.points[k]
+
+);
 
 
-  state.history.splice(
-    index,
-    1
-  );
+state.history.splice(
+index,
+1
+);
 
 
-  save();
+save();
 
 }
+
+
+/* =========================
+   YENİ OYUN
+========================= */
 
 
 function newGame(){
 
-  if(
-    !confirm(
-      'Mevcut oyun ve geçmiş silinsin mi? Oyuncu isimleri korunacak.'
-    )
-  )
-    return;
+if(
+
+!confirm(
+
+'Mevcut skor ve 20 oyunluk çizelge silinsin mi? Oyuncu isimleri korunacak.'
+
+)
+
+)
+return;
 
 
-  state.scores =
-    [0,0,0,0];
-
-  state.history =
-    [];
+state.scores=
+[0,0,0,0];
 
 
-  save();
+state.history=
+[];
+
+
+save();
 
 }
+
+
+/* =========================
+   OYUNCU DETAY
+========================= */
+
+
+function detail(index){
+
+const breakdown={};
+
+
+Object.keys(META).forEach(
+
+key=>
+breakdown[key]=0
+
+);
+
+
+state.history.forEach(
+
+item=>{
+
+if(item.type){
+
+breakdown[item.type]+=
+(item.points[index]||0);
+
+}
+
+}
+
+);
+
+
+const total=
+state.scores[index];
+
+
+document.getElementById(
+'modalbox'
+).innerHTML=
+
+`
+
+<h2>
+📊 ${esc(state.names[index])}
+</h2>
+
+
+${Object.keys(META).map(
+
+key=>`
+
+<div class="detailrow">
+
+<span>
+${META[key][0]}
+</span>
+
+
+<b
+class="${breakdown[key]<0?'neg':'pos'}">
+
+${breakdown[key]>0?'+':''}
+${breakdown[key]}
+
+</b>
+
+</div>
+
+`
+
+).join('')}
+
+
+<div
+class="winner"
+style="margin-top:14px">
+
+TOPLAM:
+
+${total>0?'+':''}${total}
+
+</div>
+
+
+<button
+class="ghost"
+style="width:100%"
+onclick="closeModal()">
+
+Kapat
+
+</button>
+
+`;
+
+
+document.getElementById(
+'modal'
+).classList.remove(
+'hidden'
+);
+
+}
+
+
+/* =========================
+   OYUN BİTİŞİ
+========================= */
+
+
+function finishScreen(){
+
+const order=
+
+state.names.map(
+
+(name,i)=>
+({
+n:name,
+s:state.scores[i]
+})
+
+).sort(
+
+(a,b)=>
+b.s-a.s
+
+);
+
+
+const total=
+state.scores.reduce(
+(a,b)=>a+b,
+0
+);
+
+
+document.getElementById(
+'modalbox'
+).innerHTML=
+
+`
+
+<div
+class="winner">
+
+🏆 KING BİTTİ
+
+</div>
+
+
+<div
+class="info"
+style="margin-bottom:12px">
+
+20 oyun tamamlandı.
+
+</div>
+
+
+${order.map(
+
+(x,i)=>`
+
+<div class="detailrow">
+
+<b>
+
+${
+i===0
+?'🥇'
+:
+i===1
+?'🥈'
+:
+i===2
+?'🥉'
+:
+'4️⃣'
+}
+
+${esc(x.n)}
+
+</b>
+
+
+<b
+class="${x.s<0?'neg':'pos'}">
+
+${x.s>0?'+':''}${x.s}
+
+</b>
+
+</div>
+
+`
+
+).join('')}
+
+
+<div
+class="${total===0?'ok':'warn'}">
+
+${
+total===0
+
+?
+
+'✓ Puan toplamı 0 — oyun dengeli.'
+
+:
+
+'⚠️ Puan toplamı 0 değil; kayıtları kontrol edin.'
+
+}
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="ghost"
+onclick="closeModal()">
+
+Kapat
+
+</button>
+
+
+<button
+class="primary"
+onclick="finishNewGame()">
+
+Yeni Oyun
+
+</button>
+
+</div>
+
+`;
+
+
+document.getElementById(
+'modal'
+).classList.remove(
+'hidden'
+);
+
+}
+
+
+/* =========================
+   BİTİŞTEN YENİ OYUN
+========================= */
+
+
+function finishNewGame(){
+
+closeModal();
+
+newGame();
+
+}
+
+
+/* =========================
+   AYARLAR
+========================= */
 
 
 function settings(){
 
-  const box =
-    document.getElementById('modalbox');
+const box=
+document.getElementById(
+'modalbox'
+);
 
 
-  box.innerHTML = `
+box.innerHTML=
 
-    <h2>
-      ⚙️ Oyuncular ve Puanlar
-    </h2>
+`
 
-    ${state.names.map(
-      (name,index)=>`
-
-        <label>
-          Oyuncu ${index+1}
-        </label>
-
-        <input
-          id="name${index}"
-          value="${esc(name)}">
-
-      `
-    ).join('')}
+<h2>
+⚙️ Oyuncular ve Puanlar
+</h2>
 
 
-    <h3>
-      Puan Ayarları
-    </h3>
+${state.names.map(
+
+(name,index)=>`
+
+<label>
+Oyuncu ${index+1}
+</label>
 
 
-    ${Object.keys(DEFAULTS).map(
-      key=>`
+<input
+id="name${index}"
+value="${esc(name)}">
 
-        <label>
-          ${META[key][0]}
-        </label>
+`
 
-        <input
-          type="number"
-          id="rate${key}"
-          value="${state.rates[key]}">
-
-      `
-    ).join('')}
+).join('')}
 
 
-    <div class="actions">
-
-      <button
-        class="ghost"
-        onclick="closeModal()">
-
-        İptal
-
-      </button>
-
-      <button
-        class="primary"
-        onclick="saveSettings()">
-
-        Kaydet
-
-      </button>
-
-    </div>
+<h3>
+Puan Ayarları
+</h3>
 
 
-    <button
-      class="ghost"
-      style="width:100%;margin-top:8px"
-      onclick="resetRates()">
+${Object.keys(DEFAULTS).map(
 
-      Varsayılan Puanlara Dön
+key=>`
 
-    </button>
-
-  `;
+<label>
+${META[key][0]}
+</label>
 
 
-  document
-    .getElementById('modal')
-    .classList
-    .remove('hidden');
+<input
+type="number"
+id="rate${key}"
+value="${state.rates[key]}">
+
+`
+
+).join('')}
+
+
+<div class="actions">
+
+<button
+class="ghost"
+onclick="closeModal()">
+
+İptal
+
+</button>
+
+
+<button
+class="primary"
+onclick="saveSettings()">
+
+Kaydet
+
+</button>
+
+</div>
+
+
+<button
+class="ghost"
+style="width:100%;margin-top:8px"
+onclick="resetRates()">
+
+Varsayılan Puanlara Dön
+
+</button>
+
+`;
+
+
+document.getElementById(
+'modal'
+).classList.remove(
+'hidden'
+);
 
 }
+
+
+/* =========================
+   AYARLARI KAYDET
+========================= */
 
 
 function saveSettings(){
 
-  state.names =
-    state.names.map(
-      (_,index)=>
+state.names=
 
-        document.getElementById(
-          'name' + index
-        ).value.trim()
-        ||
-        ('Oyuncu ' + (index+1))
+state.names.map(
 
-    );
+(_,i)=>
 
+document.getElementById(
+'name'+i
+).value.trim()
 
-  Object.keys(DEFAULTS).forEach(
-    key=>{
+||
 
-      const value =
-        Number(
-          document.getElementById(
-            'rate' + key
-          ).value
-        );
+('Oyuncu '+(i+1))
+
+);
 
 
-      state.rates[key] =
-        Math.abs(
-          value || DEFAULTS[key]
-        );
+Object.keys(DEFAULTS).forEach(
 
-    }
-  );
+key=>{
 
+state.rates[key]=
 
-  save();
+Math.abs(
 
-  closeModal();
+Number(
+
+document.getElementById(
+'rate'+key
+).value
+
+)
+
+||
+
+DEFAULTS[key]
+
+);
 
 }
+
+);
+
+
+save();
+
+closeModal();
+
+}
+
+
+/* =========================
+   VARSAYILAN PUANLAR
+========================= */
 
 
 function resetRates(){
 
-  state.rates =
-    {...DEFAULTS};
+state.rates={
+...DEFAULTS
+};
 
-  settings();
+settings();
 
 }
+
+
+/* =========================
+   MODAL KAPAT
+========================= */
 
 
 function closeModal(){
 
-  document
-    .getElementById('modal')
-    .classList
-    .add('hidden');
+document.getElementById(
+'modal'
+).classList.add(
+'hidden'
+);
 
 }
 
 
-document
-  .getElementById('modal')
-  .addEventListener(
-    'click',
-    event=>{
+document.getElementById(
+'modal'
+).addEventListener(
 
-      if(
-        event.target.id === 'modal'
-      ){
+'click',
 
-        closeModal();
+event=>{
 
-      }
+if(
+event.target.id==='modal'
+){
 
-    }
-  );
+closeModal();
+
+}
+
+}
+
+);
+
+
+/* =========================
+   BAŞLAT
+========================= */
 
 
 render();
 
+
 </script>
 
+
 </body>
-        </html>
+
+  </html>
