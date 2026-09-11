@@ -1,2449 +1,482 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b1220">
-
-<title>King Yaz-Boz</title>
-
+<title>King Canlı Yaz-Boz</title>
 <style>
-
 :root{
---bg:#0b1220;
---card:#1e293b;
---card2:#263449;
---line:#3b4a60;
---text:#f8fafc;
---muted:#a8b3c2;
---green:#22c55e;
---red:#fb7185;
---blue:#2563eb;
---gold:#f59e0b;
+  --bg:#0b1220;--card:#1e293b;--card2:#263449;--line:#3b4a60;
+  --text:#f8fafc;--muted:#a8b3c2;--green:#22c55e;--red:#fb7185;
+  --blue:#2563eb;--gold:#f59e0b;
 }
-
-*{
-box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-margin:0;
-background:linear-gradient(180deg,#09101d,#111827);
-color:var(--text);
-font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-.app{
-max-width:720px;
-margin:auto;
-padding:14px 12px 45px;
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px;
-}
-
-h1{
-font-size:24px;
-margin:0;
-}
-
-h2{
-font-size:18px;
-margin:0 0 12px;
-}
-
-h3{
-font-size:16px;
-margin-top:20px;
-}
-
-.sub{
-font-size:12px;
-color:var(--muted);
-}
-
-button{
-border:0;
-border-radius:12px;
-padding:11px 14px;
-font-weight:800;
-color:white;
-background:#334155;
-cursor:pointer;
-}
-
-button:active{
-transform:scale(.98);
-}
-
-button:disabled{
-opacity:.45;
-cursor:not-allowed;
-}
-
-.primary{
-background:var(--blue);
-}
-
-.danger{
-background:#991b1b;
-}
-
-.ghost{
-background:transparent;
-border:1px solid #506078;
-}
-
-/* SKOR KARTLARI */
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.player{
-background:var(--card);
-border:1px solid var(--line);
-border-radius:17px;
-padding:14px;
-cursor:pointer;
-}
-
-.player:active{
-transform:scale(.99);
-}
-
-.name{
-font-weight:850;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis;
-}
-
-.score{
-font-size:28px;
-font-weight:950;
-margin-top:3px;
-}
-
-.pos{
-color:var(--green);
-}
-
-.neg{
-color:var(--red);
-}
-
-/* PANELLER */
-
-.panel{
-background:rgba(30,41,59,.94);
-border:1px solid var(--line);
-border-radius:19px;
-padding:15px;
-margin-top:13px;
-}
-
-.status{
-display:flex;
-justify-content:space-between;
-gap:8px;
-align-items:center;
-}
-
-.progress{
-height:8px;
-background:#0f172a;
-border-radius:20px;
-overflow:hidden;
-margin:9px 0;
-}
-
-.progress>div{
-height:100%;
-background:var(--green);
-width:0;
-transition:width .25s;
-}
-
-/* OYUN BUTONLARI */
-
-.gamegrid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:9px;
-}
-
-.gamebtn{
-min-height:55px;
-background:var(--card2);
-}
-
-.gamebtn small{
-display:block;
-color:#cbd5e1;
-font-weight:500;
-margin-top:3px;
-}
-
-/* ÇİZELGE */
-
-.chartWrap{
-overflow-x:auto;
--webkit-overflow-scrolling:touch;
-}
-
-.chart{
-width:100%;
-min-width:580px;
-border-collapse:collapse;
-font-size:12px;
-}
-
-.chart th{
-background:#0f172a;
-color:#cbd5e1;
-position:sticky;
-top:0;
-z-index:1;
-}
-
-.chart th,
-.chart td{
-padding:9px 6px;
-border-bottom:1px solid #334155;
-text-align:center;
-white-space:nowrap;
-}
-
-.chart th:first-child,
-.chart td:first-child{
-text-align:center;
-}
-
-.chart td.gameName{
-text-align:left;
-font-weight:700;
-}
-
-.chart tr.current{
-background:#1e3a2a;
-}
-
-.chart tr:nth-child(even){
-background:rgba(15,23,42,.22);
-}
-
-.roundNo{
-font-weight:900;
-color:#cbd5e1;
-}
-
-/* GEÇMİŞ */
-
-.history{
-overflow:auto;
-}
-
-.history table{
-width:100%;
-border-collapse:collapse;
-font-size:12px;
-}
-
-.history th,
-.history td{
-padding:8px 4px;
-border-bottom:1px solid #334155;
-text-align:center;
-}
-
-.history th:first-child,
-.history td:first-child{
-text-align:left;
-}
-
-.history button{
-padding:6px 8px;
-}
-
-/* MODAL */
-
-.modal{
-position:fixed;
-inset:0;
-background:rgba(2,6,23,.82);
-display:flex;
-align-items:flex-end;
-justify-content:center;
-padding:10px;
-z-index:5;
-}
-
-.modalbox{
-width:min(700px,100%);
-max-height:92vh;
-overflow:auto;
-background:#172033;
-border:1px solid #506078;
-border-radius:22px;
-padding:18px;
-}
-
-.hidden{
-display:none;
-}
-
-.row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:8px;
-margin:10px 0;
-}
-
-.counter{
-display:flex;
-align-items:center;
-gap:7px;
-}
-
-.counter button{
-width:38px;
-height:38px;
-padding:0;
-font-size:20px;
-}
-
-.num{
-width:34px;
-text-align:center;
-font-weight:900;
-font-size:18px;
-}
-
-input{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:1px solid #506078;
-background:#0f172a;
-color:#fff;
-font-size:16px;
-}
-
-input[type=checkbox]{
-width:23px;
-height:23px;
-}
-
-label{
-display:block;
-color:#cbd5e1;
-font-size:13px;
-margin:10px 0 5px;
-}
-
-.actions{
-display:flex;
-gap:8px;
-margin-top:15px;
-}
-
-.actions button{
-flex:1;
-}
-
-.warn,
-.ok,
-.info{
-padding:10px;
-border-radius:10px;
-margin-top:10px;
-font-size:13px;
-}
-
-.warn{
-background:#3f1d1d;
-border:1px solid #7f1d1d;
-color:#fecaca;
-}
-
-.ok{
-background:#12351f;
-border:1px solid #166534;
-color:#bbf7d0;
-}
-
-.info{
-background:#172554;
-border:1px solid #1d4ed8;
-color:#bfdbfe;
-}
-
-/* DETAY */
-
-.detailrow{
-display:flex;
-justify-content:space-between;
-padding:9px 0;
-border-bottom:1px solid #334155;
-}
-
-.winner{
-font-size:18px;
-font-weight:900;
-text-align:center;
-padding:11px;
-border-radius:12px;
-background:#3b2a0b;
-border:1px solid #8a6500;
-margin-bottom:12px;
-}
-
-/* TELEFON */
-
-@media(max-width:420px){
-
-h1{
-font-size:21px;
-}
-
-.score{
-font-size:24px;
-}
-
-.gamebtn{
-font-size:13px;
-}
-
-.panel{
-padding:13px;
-}
-
-}
-
+  margin:0;background:linear-gradient(180deg,#09101d,#111827);
+  color:var(--text);font-family:system-ui,-apple-system,sans-serif;
+}
+.app{max-width:720px;margin:auto;padding:14px 12px 45px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+h1{font-size:20px;margin:0}
+h2{font-size:16px;margin:0 0 10px}
+.sub{font-size:12px;color:var(--muted)}
+button{border:0;border-radius:12px;padding:10px 14px;font-weight:700;color:#fff;background:#334155;cursor:pointer}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:var(--blue)}
+.danger{background:#991b1b}
+.ghost{background:transparent;border:1px solid #506078}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.player{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;position:relative}
+.player.active-me{border-color:var(--green)}
+.player .me-badge{position:absolute;right:8px;top:8px;font-size:10px;background:var(--green);color:#022c22;padding:2px 6px;border-radius:6px;font-weight:900}
+.name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score{font-size:26px;font-weight:900;margin-top:2px}
+.pos{color:var(--green)}
+.neg{color:var(--red)}
+.panel{background:rgba(30,41,59,.95);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
+.status{display:flex;justify-content:space-between;align-items:center}
+.progress{height:8px;background:#0f172a;border-radius:10px;overflow:hidden;margin:8px 0}
+.progress>div{height:100%;background:var(--green);width:0;transition:width .2s}
+.gamegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gamebtn{min-height:54px;background:var(--card2);text-align:left;position:relative}
+.gamebtn small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
+.gamebtn .badge{position:absolute;right:8px;top:8px;font-size:11px;background:#0f172a;padding:2px 6px;border-radius:6px}
+.chartWrap{overflow-x:auto}
+.chart{width:100%;min-width:540px;border-collapse:collapse;font-size:12px}
+.chart th,.chart td{padding:8px 6px;border-bottom:1px solid #334155;text-align:center}
+.chart th{background:#0f172a;color:#cbd5e1}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.85);display:flex;align-items:flex-end;justify-content:center;padding:10px;z-index:10}
+.modalbox{width:min(680px,100%);max-height:90vh;overflow:auto;background:#172033;border:1px solid #506078;border-radius:20px;padding:16px}
+.hidden{display:none}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}
+.counter{display:flex;align-items:center;gap:6px}
+.counter button{width:36px;height:36px;padding:0;font-size:18px}
+.num{width:30px;text-align:center;font-weight:800;font-size:16px}
+input{width:100%;padding:10px;border-radius:8px;border:1px solid #506078;background:#0f172a;color:#fff}
+.actions{display:flex;gap:8px;margin-top:14px}
+.actions button{flex:1}
+.warn,.ok{padding:8px;border-radius:8px;margin-top:8px;font-size:12px}
+.warn{background:#451a1a;color:#fca5a5}
+.ok{background:#143823;color:#86efac}
+.detailrow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #334155}
+.lobby-screen{text-align:center;padding:30px 10px}
 </style>
-
 </head>
-
-
 <body>
-
 
 <div class="app">
 
-
-<!-- BAŞLIK -->
-
-<div class="top">
-
-<div>
-
-<h1>🃏 KING YAZ-BOZ</h1>
-
-<div class="sub">
-4 kişilik klasik King skor takip
-</div>
-
-</div>
-
-<button
-class="ghost"
-onclick="settings()">
-
-⚙️
-
-</button>
-
-</div>
-
-
-<!-- İLERLEME -->
-
-<div
-class="panel"
-style="margin-top:0">
-
-<div class="status">
-
-<b>
-Oyun İlerlemesi
-</b>
-
-<span
-id="progressText"
-class="sub">
-0/20 oyun
-</span>
-
-</div>
-
-
-<div class="progress">
-
-<div
-id="progressBar">
-</div>
-
-</div>
-
-
-<div
-id="balance"
-class="sub">
-</div>
-
-</div>
-
-
-<!-- OYUNCULAR -->
-
-<div
-id="players"
-class="grid"
-style="margin-top:13px">
-</div>
-
-
-<!-- EL EKLE -->
-
-<div class="panel">
-
-<h2>
-El Ekle
-</h2>
-
-
-<div class="gamegrid">
-
-
-<button
-class="gamebtn"
-onclick="openGame('spade')">
-
-♠️ Maça Koz
-
-<small>
-+50 / el
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('heart')">
-
-♥️ Kupa Koz
-
-<small>
-+50 / el
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('diamond')">
-
-♦️ Karo Koz
-
-<small>
-+50 / el
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('club')">
-
-♣️ Sinek Koz
-
-<small>
-+50 / el
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('trickless')">
-
-🚫 El Almaz
-
-<small>
--50 / el
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('hearts')">
-
-♥️ Kupa Almaz
-
-<small>
--30 / kupa
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('queens')">
-
-👸 Kız Almaz
-
-<small>
--100 / kız
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('men')">
-
-🤵 Erkek Almaz
-
-<small>
--60 / V+K
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('last2')">
-
-2️⃣ Son İki
-
-<small>
--180 / el
-</small>
-
-</button>
-
-
-<button
-class="gamebtn"
-onclick="openGame('rifki')">
-
-♥️ Rıfkı
-
-<small>
--320
-</small>
-
-</button>
-
+  <!-- LOBBY GİRİŞ EKRANI -->
+  <div id="lobbyView" class="panel lobby-screen">
+    <h2>🃏 Masaya Katıl veya Aç</h2>
+    <p class="sub">4 telefonun anlık senkronize olması için bir oda kodu belirleyin.</p>
+    
+    <div style="margin:20px 0">
+      <input id="roomInput" placeholder="Oda Kodu (Örn: KING4)" style="text-transform:uppercase;text-align:center;font-size:20px;font-weight:800;letter-spacing:2px">
+    </div>
+
+    <div class="actions">
+      <button class="primary" onclick="window.enterRoom()">Masaya Gir</button>
+      <button class="ghost" onclick="window.createQuickRoom()">Rastgele Masa Aç</button>
+    </div>
+  </div>
+
+  <!-- OYUN MASASI EKRANI -->
+  <div id="gameView" class="hidden">
+    <div class="top">
+      <div>
+        <h1 id="roomTitle">🃏 ODA: ----</h1>
+        <div class="sub" id="myIdentity">Koltuk Seçilmedi</div>
+      </div>
+      <div>
+        <button class="ghost" onclick="window.switchSeat()">👤 Koltuğum</button>
+        <button class="ghost" onclick="window.settings()">⚙️ İsimler</button>
+        <button class="ghost" onclick="window.exitRoom()">Çıkış</button>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:0">
+      <div class="status">
+        <b>Oyun İlerlemesi</b>
+        <span id="progressText" class="sub">0/20 oyun</span>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div id="balance" class="sub"></div>
+    </div>
+
+    <div id="players" class="grid"></div>
+
+    <div class="panel">
+      <h2>El Ekle</h2>
+      <div id="gameGrid" class="gamegrid"></div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>📋 20 El Çizelgesi</h2>
+        <button class="danger" onclick="window.resetGamePrompt()">Sıfırla</button>
+      </div>
+      <div class="chartWrap">
+        <table class="chart">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th style="text-align:left">Oyun</th>
+              <th id="th0">O1</th><th id="th1">O2</th><th id="th2">O3</th><th id="th3">O4</th>
+              <th>Sil</th>
+            </tr>
+          </thead>
+          <tbody id="chartBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 </div>
 
+<div id="modal" class="modal hidden">
+  <div class="modalbox" id="modalbox"></div>
 </div>
 
+<!-- FIREBASE ENTEGRASYONU -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-<!-- 20 OYUN ÇİZELGESİ -->
-
-<div class="panel">
-
-<div
-style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-
-<div>
-
-<h2 style="margin-bottom:3px">
-📋 King Çizelgesi
-</h2>
-
-<div class="sub">
-20 oyunluk el takibi
-</div>
-
-</div>
-
-<div
-id="chartCount"
-class="sub">
-0 / 20
-</div>
-
-</div>
-
-
-<div
-class="chartWrap"
-style="margin-top:10px">
-
-<table
-class="chart">
-
-<thead>
-
-<tr>
-
-<th>
-#
-</th>
-
-<th>
-Oyun
-</th>
-
-<th id="th0">
-Oyuncu 1
-</th>
-
-<th id="th1">
-Oyuncu 2
-</th>
-
-<th id="th2">
-Oyuncu 3
-</th>
-
-<th id="th3">
-Oyuncu 4
-</th>
-
-<th>
-İşlem
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody
-id="chartBody">
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- GEÇMİŞ -->
-
-<div class="panel">
-
-<div
-style="display:flex;justify-content:space-between;align-items:center">
-
-<h2>
-📜 İşlem Geçmişi
-</h2>
-
-<button
-class="danger"
-onclick="newGame()">
-
-Yeni Oyun
-
-</button>
-
-</div>
-
-
-<div
-id="history"
-class="history">
-</div>
-
-</div>
-
-
-</div>
-
-
-<!-- MODAL -->
-
-<div
-id="modal"
-class="modal hidden">
-
-<div
-class="modalbox"
-id="modalbox">
-</div>
-
-</div>
-
-
-<script>
-
-
-/* =========================
-   PUANLAR
-========================= */
-
-
-const DEFAULTS={
-
-spade:50,
-heart:50,
-diamond:50,
-club:50,
-
-trickless:50,
-hearts:30,
-queens:100,
-men:60,
-
-last2:180,
-rifki:320
-
+const firebaseConfig = {
+  apiKey: "AIzaSyAhFDMssH4Jw3fRBI-IdZUypu0m4UgZM8Y",
+  authDomain: "king-yazboz-81768.firebaseapp.com",
+  databaseURL: "https://king-yazboz-81768-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "king-yazboz-81768",
+  storageBucket: "king-yazboz-81768.firebasestorage.app",
+  messagingSenderId: "948731253714",
+  appId: "1:948731253714:web:fcc460997d2ff09ad96e0b"
 };
 
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-/* =========================
-   OYUNLAR
-========================= */
-
-
-const META={
-
-spade:[
-'♠️ Maça Koz',
-13
-],
-
-heart:[
-'♥️ Kupa Koz',
-13
-],
-
-diamond:[
-'♦️ Karo Koz',
-13
-],
-
-club:[
-'♣️ Sinek Koz',
-13
-],
-
-trickless:[
-'🚫 El Almaz',
-13
-],
-
-hearts:[
-'♥️ Kupa Almaz',
-13
-],
-
-queens:[
-'👸 Kız Almaz',
-4
-],
-
-men:[
-'🤵 Erkek Almaz',
-8
-],
-
-last2:[
-'2️⃣ Son İki',
-2
-],
-
-rifki:[
-'♥️ Rıfkı',
-1
-]
-
+const DEFAULTS = {
+  spade: 50, heart: 50, diamond: 50, club: 50,
+  trickless: 50, hearts: 30, queens: 100, men: 60, last2: 180, rifki: 320
 };
 
-
-const NEG=[
-
-'trickless',
-'hearts',
-'queens',
-'men'
-
-];
-
-
-/* =========================
-   VERİ
-========================= */
-
-
-let state=
-
-JSON.parse(
-localStorage.getItem('kingState') || 'null'
-)
-||
-{
-
-names:[
-'Oyuncu 1',
-'Oyuncu 2',
-'Oyuncu 3',
-'Oyuncu 4'
-],
-
-scores:[
-0,
-0,
-0,
-0
-],
-
-history:[],
-
-rates:{
-...DEFAULTS
-}
-
+const META = {
+  spade: ['♠️ Maça Koz', 13, 2],
+  heart: ['♥️ Kupa Koz', 13, 2],
+  diamond: ['♦️ Karo Koz', 13, 2],
+  club: ['♣️ Sinek Koz', 13, 2],
+  trickless: ['🚫 El Almaz', 13, 2],
+  hearts: ['♥️ Kupa Almaz', 13, 2],
+  queens: ['👸 Kız Almaz', 4, 2],
+  men: ['🤵 Erkek Almaz', 8, 2],
+  last2: ['2️⃣ Son İki', 2, 2],
+  rifki: ['♥️ Rıfkı', 1, 2]
 };
 
+const NEG = ['trickless', 'hearts', 'queens', 'men', 'last2', 'rifki'];
 
-state.rates={
-...DEFAULTS,
-...(state.rates || {})
+let currentRoomId = null;
+let myPlayerIndex = parseInt(localStorage.getItem('kingMyIndex') ?? '-1', 10);
+
+let state = {
+  names: ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'],
+  scores: [0, 0, 0, 0],
+  history: [],
+  rates: { ...DEFAULTS }
 };
 
+window.createQuickRoom = () => {
+  const code = 'K' + Math.floor(100 + Math.random() * 900);
+  document.getElementById('roomInput').value = code;
+  window.enterRoom();
+};
 
-state.history=
-state.history || [];
+window.enterRoom = () => {
+  const input = document.getElementById('roomInput').value.trim().toUpperCase();
+  if (!input) return alert('Lütfen geçerli bir oda kodu girin!');
+  currentRoomId = input;
 
+  const roomRef = ref(db, 'rooms/' + currentRoomId);
+  onValue(roomRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      state = data;
+      state.history = state.history || [];
+      state.scores = state.scores || [0, 0, 0, 0];
+      state.rates = state.rates || { ...DEFAULTS };
+    } else {
+      set(roomRef, state);
+    }
+    document.getElementById('lobbyView').classList.add('hidden');
+    document.getElementById('gameView').classList.remove('hidden');
+    document.getElementById('roomTitle').textContent = '🃏 ODA: ' + currentRoomId;
+    render();
+    if (myPlayerIndex === -1) window.switchSeat();
+  });
+};
 
-/* =========================
-   KAYDET
-========================= */
+window.exitRoom = () => {
+  if (!confirm('Odadan çıkmak istediğinize emin misiniz?')) return;
+  location.reload();
+};
 
-
-function save(){
-
-localStorage.setItem(
-'kingState',
-JSON.stringify(state)
-);
-
-render();
-
+function syncState() {
+  if (!currentRoomId) return;
+  set(ref(db, 'rooms/' + currentRoomId), state);
 }
 
-
-/* =========================
-   GÜVENLİ METİN
-========================= */
-
-
-function esc(text){
-
-return String(text).replace(
-/[&<>"']/g,
-
-m=>({
-
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#039;'
-
-}[m])
-
-);
-
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
 
-
-/* =========================
-   RENDER
-========================= */
-
-
-function render(){
-
-
-/* OYUNCU KARTLARI */
-
-document.getElementById(
-'players'
-).innerHTML=
-
-state.names.map(
-
-(name,index)=>`
-
-<div
-class="player"
-onclick="detail(${index})">
-
-<div class="name">
-
-${esc(name)}
-
-</div>
-
-
-<div
-class="score ${state.scores[index]>=0?'pos':'neg'}">
-
-${state.scores[index]>0?'+':''}${state.scores[index]}
-
-</div>
-
-
-<div class="sub">
-
-Detay için dokun
-
-</div>
-
-</div>
-
-`
-
-).join('');
-
-
-/* İLERLEME */
-
-const count=
-state.history.length;
-
-const pct=
-Math.min(
-100,
-count/20*100
-);
-
-
-document.getElementById(
-'progressText'
-).textContent=
-
-`${count}/20 oyun`;
-
-
-document.getElementById(
-'progressBar'
-).style.width=
-
-pct+'%';
-
-
-document.getElementById(
-'chartCount'
-).textContent=
-
-`${count} / 20`;
-
-
-/* TOPLAM PUAN */
-
-const total=
-state.scores.reduce(
-(a,b)=>a+b,
-0
-);
-
-
-document.getElementById(
-'balance'
-).innerHTML=
-
-total===0
-
-?
-
-'<span class="pos">✓ Puan dengesi: 0</span>'
-
-:
-
-`<span class="warn" style="display:block">
-
-⚠️ Puan dengesi:
-
-${total>0?'+':''}${total}
-
-</span>`;
-
-
-/* OYUNCU İSİMLERİ */
-
-for(let i=0;i<4;i++){
-
-document.getElementById(
-'th'+i
-).textContent=
-state.names[i];
-
+function getGameUsage(type) {
+  return (state.history || []).filter(h => h.type === type).length;
 }
 
+function render() {
+  document.getElementById('players').innerHTML = state.names.map((name, i) => `
+    <div class="player ${myPlayerIndex === i ? 'active-me' : ''}" onclick="window.detail(${i})">
+      ${myPlayerIndex === i ? '<span class="me-badge">SEN</span>' : ''}
+      <div class="name">${esc(name)}</div>
+      <div class="score ${state.scores[i] >= 0 ? 'pos' : 'neg'}">
+        ${state.scores[i] > 0 ? '+' : ''}${state.scores[i]}
+      </div>
+      <div class="sub">Detay için dokun</div>
+    </div>
+  `).join('');
 
-/* ÇİZELGE */
+  const count = (state.history || []).length;
+  document.getElementById('progressText').textContent = `${count}/20 oyun`;
+  document.getElementById('progressBar').style.width = Math.min(100, (count / 20) * 100) + '%';
 
-renderChart();
+  const total = state.scores.reduce((a, b) => a + b, 0);
+  document.getElementById('balance').innerHTML = total === 0
+    ? '<span class="pos">✓ Puan dengesi tam (0)</span>'
+    : `<span class="warn">⚠️ Masa dengesi: ${total > 0 ? '+' : ''}${total} (0 olmalı)</span>`;
 
+  document.getElementById('gameGrid').innerHTML = Object.keys(META).map(key => {
+    const used = getGameUsage(key);
+    const limit = META[key][2];
+    const isFull = used >= limit || count >= 20;
+    return `
+      <button class="gamebtn" ${isFull ? 'disabled' : ''} onclick="window.openGame('${key}')">
+        <span class="badge">${used}/${limit}</span>
+        ${META[key][0]}
+        <small>${NEG.includes(key) ? '-' : '+'}${state.rates[key]} / ${key === 'rifki' ? 'tek' : 'el'}</small>
+      </button>
+    `;
+  }).join('');
 
-/* GEÇMİŞ */
+  for (let i = 0; i < 4; i++) document.getElementById('th' + i).textContent = state.names[i];
+  if (myPlayerIndex !== -1) {
+    document.getElementById('myIdentity').textContent = `Koltuk: ${state.names[myPlayerIndex]}`;
+  }
 
-renderHistory();
-
+  renderChart();
 }
 
-
-/* =========================
-   ÇİZELGE
-========================= */
-
-
-function renderChart(){
-
-const body=
-document.getElementById(
-'chartBody'
-);
-
-
-let html='';
-
-
-for(let i=0;i<20;i++){
-
-const item=
-state.history[i];
-
-
-if(item){
-
-html+=`
-
-<tr
-class="${i===state.history.length-1?'current':''}">
-
-<td class="roundNo">
-
-${i+1}
-
-</td>
-
-
-<td class="gameName">
-
-${esc(item.label)}
-
-</td>
-
-
-${item.points.map(
-
-point=>`
-
-<td
-class="${point<0?'neg':'pos'}">
-
-${point>0?'+':''}${point}
-
-</td>
-
-`
-
-).join('')}
-
-
-<td>
-
-<button
-class="ghost"
-onclick="undo(${i})">
-
-↩
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
+function renderChart() {
+  let html = '';
+  for (let i = 0; i < 20; i++) {
+    const item = state.history ? state.history[i] : null;
+    if (item) {
+      html += `<tr>
+        <td><b>${i + 1}</b></td>
+        <td style="text-align:left">${esc(item.label)}</td>
+        ${item.points.map(p => `<td class="${p < 0 ? 'neg' : 'pos'}">${p > 0 ? '+' : ''}${p}</td>`).join('')}
+        <td><button class="ghost" style="padding:2px 8px" onclick="window.undo(${i})">↩</button></td>
+      </tr>`;
+    } else {
+      html += `<tr>
+        <td>${i + 1}</td>
+        <td style="text-align:left;color:#475569">— Boş —</td>
+        <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+      </tr>`;
+    }
+  }
+  document.getElementById('chartBody').innerHTML = html;
 }
 
-else{
-
-html+=`
-
-<tr>
-
-<td
-class="roundNo">
-
-${i+1}
-
-</td>
-
-
-<td
-style="color:#64748b">
-
-— Henüz oynanmadı —
-
-</td>
-
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-</tr>
-
-`;
-
-}
-
-}
-
-
-body.innerHTML=
-html;
-
-}
-
-
-/* =========================
-   GEÇMİŞ
-========================= */
-
-
-function renderHistory(){
-
-const history=
-state.history;
-
-
-if(!history.length){
-
-document.getElementById(
-'history'
-).innerHTML=
-
-'<div class="sub">Henüz el kaydedilmedi.</div>';
-
-return;
-
-}
-
-
-document.getElementById(
-'history'
-).innerHTML=
-
-`
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-#
-</th>
-
-<th>
-Oyun
-</th>
-
-${state.names.map(
-
-name=>
-`<th>${esc(name)}</th>`
-
-).join('')}
-
-<th>
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-${history.map(
-
-(item,index)=>`
-
-<tr>
-
-<td>
-${index+1}
-</td>
-
-
-<td>
-${esc(item.label)}
-</td>
-
-
-${item.points.map(
-
-point=>`
-
-<td
-class="${point<0?'neg':'pos'}">
-
-${point>0?'+':''}${point}
-
-</td>
-
-`
-
-).join('')}
-
-
-<td>
-
-<button
-class="ghost"
-onclick="undo(${index})">
-
-↩
-
-</button>
-
-</td>
-
-</tr>
-
-`
-
-).join('')}
-
-</tbody>
-
-</table>
-
-`;
-
-}
-
-
-/* =========================
-   OYUN AÇ
-========================= */
-
-
-function openGame(type){
-
-window._type=
-type;
-
-window._vals=
-[0,0,0,0];
-
-
-const [
-label,
-total
-]=META[type];
-
-
-const special=
-[
-'rifki',
-'last2'
-].includes(type);
-
-
-document.getElementById(
-'modalbox'
-).innerHTML=
-
-`
-
-<h2>
-${label}
-</h2>
-
-
-<div class="sub">
-
-${
-type==='rifki'
-
-?
-
-'Rıfkı’yı alan tek oyuncuyu seçin.'
-
-:
-
-type==='last2'
-
-?
-
-'Son iki eli alan iki oyuncuyu seçin.'
-
-:
-
-'Toplam '+total+' olmalıdır.'
-
-}
-
-</div>
-
-
-<div id="entry">
-</div>
-
-
-<div id="msg">
-</div>
-
-
-<div class="actions">
-
-<button
-class="ghost"
-onclick="closeModal()">
-
-İptal
-
-</button>
-
-
-<button
-class="primary"
-id="saveBtn"
-onclick="commit('${type}')">
-
-Eli Kaydet
-
-</button>
-
-</div>
-
-`;
-
-
-const entry=
-document.getElementById(
-'entry'
-);
-
-
-if(special){
-
-entry.innerHTML=
-
-state.names.map(
-
-(name,index)=>`
-
-<div class="row">
-
-<b>
-${esc(name)}
-</b>
-
-
-<input
-type="checkbox"
-id="pick${index}"
-onchange="validate()">
-
-</div>
-
-`
-
-).join('');
-
-}
-
-else{
-
-entry.innerHTML=
-
-state.names.map(
-
-(name,index)=>`
-
-<div class="row">
-
-<b>
-${esc(name)}
-</b>
-
-
-<div class="counter">
-
-<button
-onclick="changeVal(${index},-1,${total})">
-
-−
-
-</button>
-
-
-<div
-class="num"
-id="v${index}">
-
-0
-
-</div>
-
-
-<button
-onclick="changeVal(${index},1,${total})">
-
-+
-
-</button>
-
-</div>
-
-</div>
-
-`
-
-).join('');
-
-}
-
-
-validate();
-
-
-document.getElementById(
-'modal'
-).classList.remove(
-'hidden'
-);
-
-}
-
-
-/* =========================
-   SAYI DEĞİŞTİR
-========================= */
-
-
-function changeVal(
-index,
-delta,
-max
-){
-
-window._vals[index]=
-
-Math.max(
-0,
-Math.min(
-max,
-window._vals[index]+delta
-)
-);
-
-
-document.getElementById(
-'v'+index
-).textContent=
-
-window._vals[index];
-
-
-validate();
-
-}
-
-
-/* =========================
-   KONTROL
-========================= */
-
-
-function validate(){
-
-const type=
-window._type;
-
-const total=
-META[type][1];
-
-let ok=false;
-
-let msg='';
-
-
-if(type==='rifki'){
-
-const c=
-countPicked();
-
-
-ok=
-c===1;
-
-
-msg=
-
-ok
-
-?
-
-'<div class="ok">✓ Tek oyuncu seçildi.</div>'
-
-:
-
-'<div class="warn">⚠️ Tam 1 oyuncu seçilmelidir.</div>';
-
-}
-
-
-else if(type==='last2'){
-
-const c=
-countPicked();
-
-
-ok=
-c===2;
-
-
-msg=
-
-ok
-
-?
-
-'<div class="ok">✓ İki oyuncu seçildi.</div>'
-
-:
-
-'<div class="warn">⚠️ Tam 2 oyuncu seçilmelidir.</div>';
-
-}
-
-
-else{
-
-const sum=
-window._vals.reduce(
-(a,b)=>a+b,
-0
-);
-
-
-ok=
-sum===total;
-
-
-msg=
-
-ok
-
-?
-
-`<div class="ok">
-
-✓ Toplam ${sum}/${total}
-— kayıt yapılabilir.
-
-</div>`
-
-:
-
-`<div class="warn">
-
-⚠️ Toplam ${sum}/${total}.
-Tam ${total} olmalı.
-
-</div>`;
-
-}
-
-
-document.getElementById(
-'msg'
-).innerHTML=
-msg;
-
-
-document.getElementById(
-'saveBtn'
-).disabled=
-!ok;
-
-}
-
-
-/* =========================
-   SEÇİM SAYISI
-========================= */
-
-
-function countPicked(){
-
-return state.names.filter(
-
-(_,i)=>
-
-document.getElementById(
-'pick'+i
-)?.checked
-
-).length;
-
-}
-
-
-/* =========================
-   ELİ KAYDET
-========================= */
-
-
-function commit(type){
-
-const points=
-[0,0,0,0];
-
-
-if(type==='rifki'){
-
-state.names.forEach(
-
-(_,i)=>{
-
-if(
-document.getElementById(
-'pick'+i
-).checked
-){
-
-points[i]=
--state.rates.rifki;
-
-}
-
-}
-
-);
-
-}
-
-
-else if(type==='last2'){
-
-state.names.forEach(
-
-(_,i)=>{
-
-if(
-document.getElementById(
-'pick'+i
-).checked
-){
-
-points[i]=
--state.rates.last2;
-
-}
-
-}
-
-);
-
-}
-
-
-else{
-
-window._vals.forEach(
-
-(value,i)=>{
-
-points[i]=
-
-value*
-state.rates[type]*
-(
-NEG.includes(type)
-?
--1
-:
-1
-);
-
-}
-
-);
-
-}
-
-
-/* SKORU GÜNCELLE */
-
-state.scores=
-
-state.scores.map(
-
-(score,index)=>
-
-score+points[index]
-
-);
-
-
-/* GEÇMİŞE EKLE */
-
-state.history.push({
-
-label:
-META[type][0],
-
-points:
-points,
-
-type:
-type,
-
-date:
-new Date().toISOString()
-
+window.openGame = (type) => {
+  window._type = type;
+  window._vals = [0, 0, 0, 0];
+  const [label, total] = META[type];
+  const isCheckbox = ['rifki', 'last2'].includes(type);
+
+  document.getElementById('modalbox').innerHTML = `
+    <h2>${label}</h2>
+    <div class="sub">${isCheckbox ? (type === 'rifki' ? 'Rıfkı’yı alan 1 kişiyi seçin.' : 'Son 2 eli alanları işaretleyin (2 seçim).') : `Hedef el toplamı: ${total}`}</div>
+    <div id="entry" style="margin-top:12px">
+      ${state.names.map((name, i) => `
+        <div class="row">
+          <b>${esc(name)} ${myPlayerIndex === i ? '(Sen)' : ''}</b>
+          ${isCheckbox 
+            ? `<input type="checkbox" id="pick${i}" onchange="window.validateModal()" style="width:22px;height:22px">`
+            : `<div class="counter">
+                <button onclick="window.changeCounter(${i}, -1, ${total})">−</button>
+                <div class="num" id="v${i}">0</div>
+                <button onclick="window.changeCounter(${i}, 1, ${total})">+</button>
+               </div>`}
+        </div>
+      `).join('')}
+    </div>
+    <div id="modalMsg"></div>
+    <div class="actions">
+      <button class="ghost" onclick="window.closeModal()">Vazgeç</button>
+      <button class="primary" id="saveBtn" disabled onclick="window.commitGame('${type}')">Kaydet</button>
+    </div>
+  `;
+
+  window.validateModal();
+  document.getElementById('modal').classList.remove('hidden');
+};
+
+window.changeCounter = (index, delta, max) => {
+  window._vals[index] = Math.max(0, Math.min(max, window._vals[index] + delta));
+  document.getElementById('v' + index).textContent = window._vals[index];
+  window.validateModal();
+};
+
+window.validateModal = () => {
+  const type = window._type;
+  const total = META[type][1];
+  let ok = false;
+  let msg = '';
+
+  if (type === 'rifki') {
+    const c = [0,1,2,3].filter(i => document.getElementById('pick' + i)?.checked).length;
+    ok = (c === 1);
+    msg = ok ? '<div class="ok">✓ 1 oyuncu seçildi.</div>' : '<div class="warn">⚠️ Tam 1 oyuncu seçilmelidir.</div>';
+  } else if (type === 'last2') {
+    const c = [0,1,2,3].filter(i => document.getElementById('pick' + i)?.checked).length;
+    ok = (c === 2);
+    msg = ok ? '<div class="ok">✓ 2 el dağıtıldı.</div>' : '<div class="warn">⚠️ Tam 2 kişi işaretlenmelidir.</div>';
+  } else {
+    const sum = window._vals.reduce((a, b) => a + b, 0);
+    ok = (sum === total);
+    msg = ok ? `<div class="ok">✓ Toplam ${sum}/${total} el tamamlandı.</div>` : `<div class="warn">⚠️ Toplam: ${sum} / ${total} olmalı.</div>`;
+  }
+
+  document.getElementById('modalMsg').innerHTML = msg;
+  document.getElementById('saveBtn').disabled = !ok;
+};
+
+window.commitGame = (type) => {
+  const points = [0, 0, 0, 0];
+  const rate = state.rates[type];
+
+  if (type === 'rifki') {
+    for (let i = 0; i < 4; i++) {
+      if (document.getElementById('pick' + i).checked) points[i] = -rate;
+    }
+  } else if (type === 'last2') {
+    for (let i = 0; i < 4; i++) {
+      if (document.getElementById('pick' + i).checked) points[i] -= rate;
+    }
+  } else {
+    const sign = NEG.includes(type) ? -1 : 1;
+    for (let i = 0; i < 4; i++) {
+      points[i] = window._vals[i] * rate * sign;
+    }
+  }
+
+  state.scores = state.scores.map((s, i) => s + points[i]);
+  state.history = state.history || [];
+  state.history.push({ label: META[type][0], points, type });
+  
+  syncState();
+  window.closeModal();
+};
+
+window.undo = (index) => {
+  if (!confirm('Bu eli tüm masadan silmek istediğinize emin misiniz?')) return;
+  const removed = state.history.splice(index, 1)[0];
+  state.scores = state.scores.map((s, i) => s - removed.points[i]);
+  syncState();
+};
+
+window.resetGamePrompt = () => {
+  if (!confirm('Tüm masanın skorları sıfırlanacak. Emin misiniz?')) return;
+  state.scores = [0, 0, 0, 0];
+  state.history = [];
+  syncState();
+};
+
+window.switchSeat = () => {
+  document.getElementById('modalbox').innerHTML = `
+    <h2>👤 Koltuğunu Seç</h2>
+    <p class="sub">Masadaki hangi oyuncu olduğunu seç:</p>
+    <div style="display:grid;gap:8px;margin-top:10px">
+      ${state.names.map((name, i) => `
+        <button class="${myPlayerIndex === i ? 'primary' : 'ghost'}" onclick="window.setSeat(${i})">
+          ${esc(name)}
+        </button>
+      `).join('')}
+    </div>
+  `;
+  document.getElementById('modal').classList.remove('hidden');
+};
+
+window.setSeat = (idx) => {
+  myPlayerIndex = idx;
+  localStorage.setItem('kingMyIndex', idx);
+  window.closeModal();
+  render();
+};
+
+window.settings = () => {
+  document.getElementById('modalbox').innerHTML = `
+    <h2>⚙️ Oyuncu İsimleri</h2>
+    <p class="sub">İsimler tüm bağlanan cihazlarda güncellenir.</p>
+    ${state.names.map((n, i) => `
+      <label class="sub">Oyuncu ${i + 1}</label>
+      <input id="nameInput${i}" value="${esc(n)}" style="margin-bottom:8px">
+    `).join('')}
+    <div class="actions">
+      <button class="ghost" onclick="window.closeModal()">Vazgeç</button>
+      <button class="primary" onclick="window.saveSettings()">Masaya Kaydet</button>
+    </div>
+  `;
+  document.getElementById('modal').classList.remove('hidden');
+};
+
+window.saveSettings = () => {
+  state.names = [0, 1, 2, 3].map(i => document.getElementById('nameInput' + i).value.trim() || `Oyuncu ${i + 1}`);
+  syncState();
+  window.closeModal();
+};
+
+window.detail = (idx) => {
+  const breakdown = {};
+  Object.keys(META).forEach(k => breakdown[k] = 0);
+  (state.history || []).forEach(h => { breakdown[h.type] += (h.points[idx] || 0); });
+
+  document.getElementById('modalbox').innerHTML = `
+    <h2>📊 ${esc(state.names[idx])}</h2>
+    ${Object.keys(META).map(k => `
+      <div class="detailrow">
+        <span>${META[k][0]}</span>
+        <b class="${breakdown[k] < 0 ? 'neg' : 'pos'}">${breakdown[k] > 0 ? '+' : ''}${breakdown[k]}</b>
+      </div>
+    `).join('')}
+    <div style="margin-top:14px;font-size:18px;font-weight:900;text-align:center">
+      Toplam: <span class="${state.scores[idx] < 0 ? 'neg' : 'pos'}">${state.scores[idx]}</span>
+    </div>
+    <div class="actions"><button class="ghost" onclick="window.closeModal()">Kapat</button></div>
+  `;
+  document.getElementById('modal').classList.remove('hidden');
+};
+
+window.closeModal = () => {
+  document.getElementById('modal').classList.add('hidden');
+};
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') window.closeModal();
 });
-
-
-save();
-
-closeModal();
-
-
-/* 20 OYUN BİTTİ */
-
-if(
-state.history.length===20
-){
-
-setTimeout(
-finishScreen,
-150
-);
-
-}
-
-}
-
-
-/* =========================
-   GERİ AL
-========================= */
-
-
-function undo(index){
-
-if(
-!confirm(
-'Bu eli geri almak istediğinizden emin misiniz?'
-)
-)
-return;
-
-
-const item=
-state.history[index];
-
-
-state.scores=
-
-state.scores.map(
-
-(score,k)=>
-
-score-item.points[k]
-
-);
-
-
-state.history.splice(
-index,
-1
-);
-
-
-save();
-
-}
-
-
-/* =========================
-   YENİ OYUN
-========================= */
-
-
-function newGame(){
-
-if(
-
-!confirm(
-
-'Mevcut skor ve 20 oyunluk çizelge silinsin mi? Oyuncu isimleri korunacak.'
-
-)
-
-)
-return;
-
-
-state.scores=
-[0,0,0,0];
-
-
-state.history=
-[];
-
-
-save();
-
-}
-
-
-/* =========================
-   OYUNCU DETAY
-========================= */
-
-
-function detail(index){
-
-const breakdown={};
-
-
-Object.keys(META).forEach(
-
-key=>
-breakdown[key]=0
-
-);
-
-
-state.history.forEach(
-
-item=>{
-
-if(item.type){
-
-breakdown[item.type]+=
-(item.points[index]||0);
-
-}
-
-}
-
-);
-
-
-const total=
-state.scores[index];
-
-
-document.getElementById(
-'modalbox'
-).innerHTML=
-
-`
-
-<h2>
-📊 ${esc(state.names[index])}
-</h2>
-
-
-${Object.keys(META).map(
-
-key=>`
-
-<div class="detailrow">
-
-<span>
-${META[key][0]}
-</span>
-
-
-<b
-class="${breakdown[key]<0?'neg':'pos'}">
-
-${breakdown[key]>0?'+':''}
-${breakdown[key]}
-
-</b>
-
-</div>
-
-`
-
-).join('')}
-
-
-<div
-class="winner"
-style="margin-top:14px">
-
-TOPLAM:
-
-${total>0?'+':''}${total}
-
-</div>
-
-
-<button
-class="ghost"
-style="width:100%"
-onclick="closeModal()">
-
-Kapat
-
-</button>
-
-`;
-
-
-document.getElementById(
-'modal'
-).classList.remove(
-'hidden'
-);
-
-}
-
-
-/* =========================
-   OYUN BİTİŞİ
-========================= */
-
-
-function finishScreen(){
-
-const order=
-
-state.names.map(
-
-(name,i)=>
-({
-n:name,
-s:state.scores[i]
-})
-
-).sort(
-
-(a,b)=>
-b.s-a.s
-
-);
-
-
-const total=
-state.scores.reduce(
-(a,b)=>a+b,
-0
-);
-
-
-document.getElementById(
-'modalbox'
-).innerHTML=
-
-`
-
-<div
-class="winner">
-
-🏆 KING BİTTİ
-
-</div>
-
-
-<div
-class="info"
-style="margin-bottom:12px">
-
-20 oyun tamamlandı.
-
-</div>
-
-
-${order.map(
-
-(x,i)=>`
-
-<div class="detailrow">
-
-<b>
-
-${
-i===0
-?'🥇'
-:
-i===1
-?'🥈'
-:
-i===2
-?'🥉'
-:
-'4️⃣'
-}
-
-${esc(x.n)}
-
-</b>
-
-
-<b
-class="${x.s<0?'neg':'pos'}">
-
-${x.s>0?'+':''}${x.s}
-
-</b>
-
-</div>
-
-`
-
-).join('')}
-
-
-<div
-class="${total===0?'ok':'warn'}">
-
-${
-total===0
-
-?
-
-'✓ Puan toplamı 0 — oyun dengeli.'
-
-:
-
-'⚠️ Puan toplamı 0 değil; kayıtları kontrol edin.'
-
-}
-
-</div>
-
-
-<div class="actions">
-
-<button
-class="ghost"
-onclick="closeModal()">
-
-Kapat
-
-</button>
-
-
-<button
-class="primary"
-onclick="finishNewGame()">
-
-Yeni Oyun
-
-</button>
-
-</div>
-
-`;
-
-
-document.getElementById(
-'modal'
-).classList.remove(
-'hidden'
-);
-
-}
-
-
-/* =========================
-   BİTİŞTEN YENİ OYUN
-========================= */
-
-
-function finishNewGame(){
-
-closeModal();
-
-newGame();
-
-}
-
-
-/* =========================
-   AYARLAR
-========================= */
-
-
-function settings(){
-
-const box=
-document.getElementById(
-'modalbox'
-);
-
-
-box.innerHTML=
-
-`
-
-<h2>
-⚙️ Oyuncular ve Puanlar
-</h2>
-
-
-${state.names.map(
-
-(name,index)=>`
-
-<label>
-Oyuncu ${index+1}
-</label>
-
-
-<input
-id="name${index}"
-value="${esc(name)}">
-
-`
-
-).join('')}
-
-
-<h3>
-Puan Ayarları
-</h3>
-
-
-${Object.keys(DEFAULTS).map(
-
-key=>`
-
-<label>
-${META[key][0]}
-</label>
-
-
-<input
-type="number"
-id="rate${key}"
-value="${state.rates[key]}">
-
-`
-
-).join('')}
-
-
-<div class="actions">
-
-<button
-class="ghost"
-onclick="closeModal()">
-
-İptal
-
-</button>
-
-
-<button
-class="primary"
-onclick="saveSettings()">
-
-Kaydet
-
-</button>
-
-</div>
-
-
-<button
-class="ghost"
-style="width:100%;margin-top:8px"
-onclick="resetRates()">
-
-Varsayılan Puanlara Dön
-
-</button>
-
-`;
-
-
-document.getElementById(
-'modal'
-).classList.remove(
-'hidden'
-);
-
-}
-
-
-/* =========================
-   AYARLARI KAYDET
-========================= */
-
-
-function saveSettings(){
-
-state.names=
-
-state.names.map(
-
-(_,i)=>
-
-document.getElementById(
-'name'+i
-).value.trim()
-
-||
-
-('Oyuncu '+(i+1))
-
-);
-
-
-Object.keys(DEFAULTS).forEach(
-
-key=>{
-
-state.rates[key]=
-
-Math.abs(
-
-Number(
-
-document.getElementById(
-'rate'+key
-).value
-
-)
-
-||
-
-DEFAULTS[key]
-
-);
-
-}
-
-);
-
-
-save();
-
-closeModal();
-
-}
-
-
-/* =========================
-   VARSAYILAN PUANLAR
-========================= */
-
-
-function resetRates(){
-
-state.rates={
-...DEFAULTS
-};
-
-settings();
-
-}
-
-
-/* =========================
-   MODAL KAPAT
-========================= */
-
-
-function closeModal(){
-
-document.getElementById(
-'modal'
-).classList.add(
-'hidden'
-);
-
-}
-
-
-document.getElementById(
-'modal'
-).addEventListener(
-
-'click',
-
-event=>{
-
-if(
-event.target.id==='modal'
-){
-
-closeModal();
-
-}
-
-}
-
-);
-
-
-/* =========================
-   BAŞLAT
-========================= */
-
-
-render();
-
-
 </script>
-
-
 </body>
-
-  </html>
+</html>
