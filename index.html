@@ -175,7 +175,6 @@ button {
     box-shadow: 0 0 0 1px rgba(96,165,250,.18);
 }
 
-/* OYUNCU İSMİ VE YANINDAKİ KOZ YUVARLAKLARI */
 .player-header {
     display: flex;
     align-items: center;
@@ -225,7 +224,6 @@ button {
     font-size: 11px;
 }
 
-/* 0.6 kat (1.6x) büyütülmüş ceza simgeleri (17px -> 27px) */
 .contract-symbols {
     margin-top: 8px;
     display: flex;
@@ -376,7 +374,6 @@ button {
 }
 
 /* MODAL */
-
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -594,7 +591,7 @@ button {
         </div>
     </div>
 
-    <!-- 1. OYUNDAN İTİBAREN KÜMÜLATİF PUAN TABLOSU (2x2) -->
+    <!-- KÜMÜLATİF CANLI SKOR PANOSU (2x2) -->
     <div class="live-score-board">
         <div class="board-title">Kümülatif Canlı Skor Panosu</div>
         <div class="scoreboard-grid" id="liveScoreBoard"></div>
@@ -624,17 +621,32 @@ button {
     </div>
 
     <div class="footer-note">
-        King Yaz-Boz • Koz seçmek için sırası gelen oyuncunun isminin yanındaki boş yuvarlağa (○) tıklayın.
+        King Yaz-Boz • Koz seçimi için konuşmacının isminin yanındaki boş yuvarlağa (○) dokunun.
     </div>
 
 </div>
 
 
-<!-- OYUN GİRİŞ MODALI -->
+<!-- MAÇA 7 BAŞLANGIÇ MODALI -->
+<div class="modal-backdrop" id="macaModal">
+    <div class="modal">
+        <div class="modal-title">🂧 Maça 7 Kimde?</div>
+        <div class="modal-subtitle">
+            Maça 7'ye sahip oyuncu 1. sıraya yerleşecek ve oyunu başlatacaktır. Sıra saat yönünde ilerler.
+        </div>
 
+        <div class="radio-list" id="macaRadioList"></div>
+
+        <div class="modal-actions">
+            <button class="primary-btn" onclick="applyMaca7Selection()">Oyunu Başlat</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- OYUN GİRİŞ MODALI -->
 <div class="modal-backdrop" id="gameModal">
     <div class="modal">
-
         <div class="modal-title" id="gameModalTitle">El</div>
         <div class="modal-subtitle" id="gameModalSubtitle"></div>
 
@@ -644,64 +656,49 @@ button {
             <button class="secondary-btn" onclick="closeModal('gameModal')">İptal</button>
             <button class="primary-btn" onclick="commitGame()">Eli Kaydet</button>
         </div>
-
     </div>
 </div>
 
 
 <!-- AYARLAR -->
-
 <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-
         <div class="modal-title">⚙️ Oyun Ayarları</div>
         <div class="modal-subtitle">
-            Oyuncu isimleri ve Maça 7 sahibini belirleyin.
+            Oyuncu isimlerini düzenleyin (Saat yönü oturma düzeni).
         </div>
 
         <div class="form-group">
-            <label class="form-label">1. Oyuncu</label>
+            <label class="form-label">1. Oyuncu (Maça 7 Sahibi / İlk Konuşmacı)</label>
             <input class="text-input" id="name0">
         </div>
 
         <div class="form-group">
-            <label class="form-label">2. Oyuncu</label>
+            <label class="form-label">2. Oyuncu (Saat Yönündeki 1. Oyuncu)</label>
             <input class="text-input" id="name1">
         </div>
 
         <div class="form-group">
-            <label class="form-label">3. Oyuncu</label>
+            <label class="form-label">3. Oyuncu (Saat Yönündeki 2. Oyuncu)</label>
             <input class="text-input" id="name2">
         </div>
 
         <div class="form-group">
-            <label class="form-label">4. Oyuncu</label>
+            <label class="form-label">4. Oyuncu (Saat Yönündeki 3. Oyuncu)</label>
             <input class="text-input" id="name3">
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">🂧 Maça 7 kimde?</label>
-            <select class="select-input" id="startPlayer"></select>
-        </div>
-
-        <div class="warning">
-            Maça 7 sahibi ilk eli başlatır. Sonraki ellerde sıra saat yönünde ilerler.
         </div>
 
         <div class="modal-actions">
             <button class="secondary-btn" onclick="closeModal('settingsModal')">İptal</button>
             <button class="primary-btn" onclick="saveSettings()">Kaydet</button>
         </div>
-
     </div>
 </div>
 
 
 <!-- PUAN ÖZETİ -->
-
 <div class="modal-backdrop" id="summaryModal">
     <div class="modal">
-
         <div class="modal-title">📊 Puan Özeti</div>
         <div class="modal-subtitle">Oyuncuların güncel puan sıralaması</div>
 
@@ -710,16 +707,13 @@ button {
         <div class="modal-actions">
             <button class="secondary-btn" onclick="closeModal('summaryModal')">Kapat</button>
         </div>
-
     </div>
 </div>
 
 
 <!-- OYUN BİTTİ -->
-
 <div class="modal-backdrop" id="finishModal">
     <div class="modal">
-
         <div class="finish">
             <div style="font-size:42px;">👑</div>
             <div class="modal-title">Oyun Tamamlandı</div>
@@ -728,90 +722,52 @@ button {
             <div id="winnerContent"></div>
 
             <div class="modal-actions">
-                <button class="secondary-btn" onclick="closeModal('finishModal')">
-                    Sonuçlara Bak
-                </button>
-
-                <button class="primary-btn" onclick="closeModal('finishModal'); openScoreSummary()">
-                    📊 Puan Özeti
-                </button>
+                <button class="secondary-btn" onclick="closeModal('finishModal')">Sonuçlara Bak</button>
+                <button class="primary-btn" onclick="closeModal('finishModal'); openScoreSummary()">📊 Puan Özeti</button>
             </div>
         </div>
-
     </div>
 </div>
 
 
 <script>
 /* =========================================================
-   KING YAZ-BOZ KURALLARI
-   - 4 oyuncu, 20 el
-   - 8 Koz (Her oyuncu 2 koz - İsminin yanındaki yuvarlaklardan seçilir)
-   - 12 Ceza (Her oyuncu 3 ceza)
-   - Erkek Almaz: 8 Erkek (Rua + Vale), kart başı 30 puan
+   VARSAYILAN OYUNCULAR VE SAAT YÖNÜ DÜZENİ
+   Masa Oturma Düzeni (Saat Yönü): ERÇİN -> MERT -> ERGÜN -> ŞUAYİP
 ========================================================= */
 
-const STORAGE_KEY = "kingState_v5_custom";
+const DEFAULT_SEATING = ["ERÇİN", "MERT", "ERGÜN", "ŞUAYİP"];
+const STORAGE_KEY = "kingState_v6_maca7";
 
 const DEFAULT_STATE = {
     players: [
-        { name: "Mehmet", score: 0 },
-        { name: "Ahmet", score: 0 },
-        { name: "Ayşe", score: 0 },
-        { name: "Fatma", score: 0 }
+        { name: "ERÇİN", score: 0 },
+        { name: "MERT", score: 0 },
+        { name: "ERGÜN", score: 0 },
+        { name: "ŞUAYİP", score: 0 }
     ],
 
-    startPlayer: 0,
-
     rates: {
-        koz: 50,        // Koz el başı: +50
-        trickless: 50,  // El Almaz: 13 x 50 = -650
-        hearts: 30,     // Kupa Almaz: 13 x 30 = -390
-        queens: 100,    // Kız Almaz: 4 x 100 = -400
-        men: 30,        // Erkek Almaz: 8 x 30 = -240 (8 erkek)
-        last2: 180,     // Son İki: 2 x 180 = -360
-        rifki: 320      // Rıfkı: 1 x 320 = -320
+        koz: 50,
+        trickless: 50,
+        hearts: 30,
+        queens: 100,
+        men: 30,        // 8 Erkek (kart başı 30)
+        last2: 180,
+        rifki: 320
     },
 
     history: []
 };
 
 const META = {
-    koz: {
-        label: "🃏 Koz",
-        category: "koz",
-        total: 13
-    },
-    trickless: {
-        label: "🚫 El Almaz",
-        category: "ceza",
-        total: 13
-    },
-    hearts: {
-        label: "♥️ Kupa Almaz",
-        category: "ceza",
-        total: 13
-    },
-    queens: {
-        label: "👸 Kız Almaz",
-        category: "ceza",
-        total: 4
-    },
-    men: {
-        label: "🤵 Erkek Almaz (8)",
-        category: "ceza",
-        total: 8
-    },
-    last2: {
-        label: "2️⃣ Son İki",
-        category: "ceza",
-        total: 2
-    },
-    rifki: {
-        label: "💔 Rıfkı",
-        category: "ceza",
-        total: 1
-    }
+    koz: { label: "🃏 Koz", category: "koz", total: 13 },
+    trickless: { label: "🚫 El Almaz", category: "ceza", total: 13 },
+    hearts: { label: "♥️ Kupa Almaz", category: "ceza", total: 13 },
+    queens: { label: "👸 Kız Almaz", category: "ceza", total: 4 },
+    men: { label: "🤵 Erkek Almaz (8)", category: "ceza", total: 8 },
+    last2: { label: "2️⃣ Son İki", category: "ceza", total: 2 },
+    rifki: { label: "💔 Rıfkı", category: "ceza", total: 1 }
 };
 
 const KOZ_SUITS = {
@@ -842,22 +798,19 @@ function cloneDefault() {
 
 function loadState() {
     try {
-        let raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("kingState_v4");
+        let raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return cloneDefault();
 
         let parsed = JSON.parse(raw);
         let newState = cloneDefault();
 
-        if (Array.isArray(parsed.players)) {
+        if (Array.isArray(parsed.players) && parsed.players.length === 4) {
             parsed.players.forEach((p, i) => {
-                if (i < 4) {
-                    newState.players[i].name = p.name || newState.players[i].name;
-                    newState.players[i].score = Number(p.score) || 0;
-                }
+                newState.players[i].name = p.name || newState.players[i].name;
+                newState.players[i].score = Number(p.score) || 0;
             });
         }
 
-        newState.startPlayer = Number.isInteger(parsed.startPlayer) ? parsed.startPlayer : 0;
         if (Array.isArray(parsed.history)) {
             newState.history = parsed.history;
         }
@@ -881,8 +834,9 @@ function esc(value) {
         .replaceAll("'", "&#039;");
 }
 
+/* Konuşma sırası: 1. el 0. oyuncu (Maça 7 sahibi), sonraki eller saat yönünde (1, 2, 3...) */
 function currentSpeaker() {
-    return (state.startPlayer + state.history.length) % 4;
+    return state.history.length % 4;
 }
 
 function getKozCount(playerIndex) {
@@ -935,11 +889,10 @@ function render() {
     saveState();
 }
 
-/* 1. ELDEN İTİBAREN KÜMÜLATİF CANLI SKOR PANOSU */
 function renderLiveScoreBoard() {
     const container = document.getElementById("liveScoreBoard");
-    
     const cumulativeTotals = [0, 0, 0, 0];
+
     state.history.forEach(round => {
         if (Array.isArray(round.points)) {
             round.points.forEach((pts, pIdx) => {
@@ -969,7 +922,7 @@ function renderTurn() {
 
     if (gameFinished()) {
         el.textContent = "Oyun Tamamlandı";
-        info.textContent = "20 el tamamlandı.";
+        info.textContent = "20 el başarıyla tamamlandı.";
         return;
     }
 
@@ -988,7 +941,6 @@ function renderPlayers() {
         const koz = getKozCount(index);
         const ceza = getCezaCount(index);
 
-        // Büyütülmüş Ceza Sembolleri (0.6 kat büyük)
         let cezaSymbols = "";
         for (let i = 0; i < 3; i++) {
             cezaSymbols += (i < ceza)
@@ -996,8 +948,6 @@ function renderPlayers() {
                 : `<span class="ceza-symbol">△</span>`;
         }
 
-        // İsim Yanı Koz Yuvarlakları (Her oyuncuya 2 adet)
-        // Sıradaki oyuncunun boş yuvarlağı tıklanabilir
         let kozDots = "";
         for (let i = 0; i < 2; i++) {
             if (i < koz) {
@@ -1005,9 +955,9 @@ function renderPlayers() {
             } else {
                 const isClickable = (index === speaker) && !gameFinished();
                 if (isClickable) {
-                    kozDots += `<span class="koz-dot clickable" onclick="openGame('koz')" title="Koz oynamak için tıklayın">○</span>`;
+                    kozDots += `<span class="koz-dot clickable" onclick="openGame('koz')" title="Koz söylemek için tıklayın">○</span>`;
                 } else {
-                    kozDots += `<span class="koz-dot" style="opacity:0.4;" title="Kalan Koz">○</span>`;
+                    kozDots += `<span class="koz-dot" style="opacity:0.35;" title="Kalan Koz">○</span>`;
                 }
             }
         }
@@ -1016,7 +966,7 @@ function renderPlayers() {
             <div class="player-card ${index === speaker && !gameFinished() ? "active" : ""}">
                 <div class="player-header">
                     <div class="player-name">${esc(player.name)}</div>
-                    <div class="player-koz-selector" title="Koz Hakları (2 Adet)">
+                    <div class="player-koz-selector">
                         ${kozDots}
                     </div>
                 </div>
@@ -1028,7 +978,6 @@ function renderPlayers() {
     }).join("");
 }
 
-/* SÖZLEŞMELER BÖLÜMÜNDE KOZ YOK, SADECE CEZALAR */
 function renderContracts() {
     const container = document.getElementById("contractGrid");
 
@@ -1105,11 +1054,7 @@ function openGame(type) {
         return;
     }
 
-    pendingGame = {
-        type: type,
-        suit: null
-    };
-
+    pendingGame = { type: type, suit: null };
     const modal = document.getElementById("gameModal");
     const title = document.getElementById("gameModalTitle");
     const subtitle = document.getElementById("gameModalSubtitle");
@@ -1134,7 +1079,7 @@ function openGame(type) {
 function renderKozForm(container) {
     container.innerHTML = `
         <div class="form-group">
-            <div class="form-label">Koz rengini seçin</div>
+            <div class="form-label">Koz türünü seçin</div>
             <div class="suit-grid">
                 <button type="button" class="suit-btn" onclick="selectSuit('spade')" id="suit-spade">♠️ Maça</button>
                 <button type="button" class="suit-btn" onclick="selectSuit('heart')" id="suit-heart">♥️ Kupa</button>
@@ -1162,7 +1107,7 @@ function selectSuit(suit) {
 function renderNormalTrickForm(container, type) {
     container.innerHTML = `
         <div class="warning">
-            Toplam kart/el sayısı tam olarak <strong>${META[type].total}</strong> olmalıdır.
+            Toplam el sayısı tam olarak <strong>${META[type].total}</strong> olmalıdır.
         </div>
         <div style="margin-top:12px;">
             ${trickInputs(type)}
@@ -1272,7 +1217,7 @@ function commitGame() {
 
     if (type === "koz") {
         if (!pendingGame.suit) {
-            alert("Lütfen Koz rengini seçin.");
+            alert("Lütfen Koz türünü seçin.");
             return;
         }
 
@@ -1323,7 +1268,7 @@ function commitGame() {
         });
 
         if (total !== META[type].total) {
-            alert(`${META[type].label} için toplam ${META[type].total} kart olmalıdır.`);
+            alert(`${META[type].label} için toplam ${META[type].total} el olmalıdır.`);
             return;
         }
 
@@ -1436,17 +1381,72 @@ function undoRound(index) {
     render();
 }
 
+/* =========================================================
+   YENİ OYUN & MAÇA 7 SEÇİMİ (1. SIRAYA YERLEŞTİRME)
+========================================================= */
+
+function confirmNewGame() {
+    if (state.history.length > 0) {
+        const ok = confirm("Yeni oyun başlatılsın mı?\nMevcut oyun verileri sıfırlanacaktır.");
+        if (!ok) return;
+    }
+    openMaca7Modal();
+}
+
+function openMaca7Modal() {
+    const container = document.getElementById("macaRadioList");
+    // Mevcut veya varsayılan oyuncu isimlerini al
+    const currentNames = state.players.map(p => p.name.trim() || "Oyuncu");
+
+    container.innerHTML = currentNames.map((name, idx) => `
+        <label class="radio-option">
+            <input type="radio" name="maca7Holder" value="${idx}" ${idx === 0 ? "checked" : ""}>
+            <span style="font-weight:700;">${esc(name)}</span>
+        </label>
+    `).join("");
+
+    document.getElementById("macaModal").classList.add("show");
+}
+
+function applyMaca7Selection() {
+    const selected = document.querySelector('input[name="maca7Holder"]:checked');
+    if (!selected) {
+        alert("Lütfen Maça 7 sahibini seçin.");
+        return;
+    }
+
+    const selectedIdx = Number(selected.value);
+    const existingNames = state.players.map(p => p.name.trim());
+
+    // Seçilen oyuncuyu 1. sıraya (index 0) alıp saat yönü rotasyonunu uygula
+    const reorderedNames = [];
+    for (let i = 0; i < 4; i++) {
+        reorderedNames.push(existingNames[(selectedIdx + i) % 4]);
+    }
+
+    state = cloneDefault();
+    state.players = reorderedNames.map(name => ({
+        name: name,
+        score: 0
+    }));
+    state.history = [];
+
+    saveState();
+    closeModal("macaModal");
+    closeModal("finishModal");
+    closeModal("summaryModal");
+    render();
+}
+
+/* =========================================================
+   AYARLAR MODALI
+========================================================= */
+
 function openSettings() {
     document.getElementById("name0").value = state.players[0].name;
     document.getElementById("name1").value = state.players[1].name;
     document.getElementById("name2").value = state.players[2].name;
     document.getElementById("name3").value = state.players[3].name;
-
-    const select = document.getElementById("startPlayer");
-    select.innerHTML = state.players.map((player, index) =>
-        `<option value="${index}">${esc(player.name)}</option>`
-    ).join("");
-    select.value = state.startPlayer;
 
     document.getElementById("settingsModal").classList.add("show");
 }
@@ -1466,41 +1466,11 @@ function saveSettings() {
         }
     }
 
-    const selectedStart = Number(document.getElementById("startPlayer").value);
-
     state.players.forEach((player, index) => {
         player.name = names[index];
     });
 
-    if (state.history.length === 0) {
-        state.startPlayer = selectedStart;
-    } else if (selectedStart !== state.startPlayer) {
-        if (confirm("Oyun başladı. Başlangıç oyuncusunu değiştirmek konuşma sırasını etkiler. Devam edilsin mi?")) {
-            state.startPlayer = selectedStart;
-        }
-    }
-
     saveState();
-    closeModal("settingsModal");
-    render();
-}
-
-function confirmNewGame() {
-    if (!confirm("Yeni oyun başlatılsın mı?\nMevcut skorlar ve el geçmişi silinecek.")) return;
-
-    const names = state.players.map(p => p.name);
-    const start = state.startPlayer;
-
-    state = cloneDefault();
-    state.players.forEach((player, index) => {
-        player.name = names[index];
-        player.score = 0;
-    });
-    state.startPlayer = start;
-
-    saveState();
-    closeModal("finishModal");
-    closeModal("summaryModal");
     closeModal("settingsModal");
     render();
 }
@@ -1586,7 +1556,13 @@ document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
     });
 });
 
-render();
+/* İlk açılışta kayıt yoksa doğrudan Maça 7 modalını tetikle */
+if (!localStorage.getItem(STORAGE_KEY)) {
+    render();
+    openMaca7Modal();
+} else {
+    render();
+}
 </script>
 
 </body>
