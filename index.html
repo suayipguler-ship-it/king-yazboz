@@ -137,11 +137,11 @@ button {
 }
 
 .score-positive {
-    color: #4ade80; /* Sıfır ve pozitifler için yeşil */
+    color: #4ade80; /* 0 ve pozitif skorlar yeşil */
 }
 
 .score-negative {
-    color: #f87171; /* Negatifler için kırmızı */
+    color: #f87171; /* Eksi skorlar kırmızı */
 }
 
 .contract-count {
@@ -150,30 +150,33 @@ button {
     margin-bottom: 8px;
 }
 
-/* ÜÇGEN VE 2x BOYUTLU KOZ DAİRELERİNİN MERKEZİ ALANI */
+/* KOZ DAİRELERİ VE CEZA ÜÇGENLERİ DÜZENİ */
 .indicators-container {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-    margin-top: 4px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    gap: 2px;
 }
 
-/* 3 Üçgenin toplam genişliğine göre tam ortalayan üst satır */
+/* Üstteki Koz Daireleri */
 .koz-row {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
     line-height: 1;
-    margin-bottom: 2px;
 }
 
 .koz-dot {
-    font-size: 40px; /* 2x kat boyut */
+    font-size: 32px;
     color: #60a5fa;
     user-select: none;
-    line-height: 0.9;
-    display: inline-block;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.15s ease;
 }
 
@@ -182,24 +185,27 @@ button {
 }
 
 .koz-dot.clickable:hover {
-    transform: scale(1.15);
+    transform: scale(1.2);
     filter: drop-shadow(0 0 6px #60a5fa);
 }
 
-/* En soldaki üçgen ile en sağdaki üçgen arasındaki referans satırı */
+/* Alttaki Ceza Üçgenleri */
 .ceza-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     line-height: 1;
 }
 
 .ceza-symbol {
-    font-size: 38px;
+    font-size: 26px;
     color: #f59e0b;
     user-select: none;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .section {
@@ -578,7 +584,7 @@ button {
     </div>
 
     <div class="footer-note">
-        King Yaz-Boz • Koz seçmek için konuşmacının büyük boş dairesine (○) dokunun.
+        King Yaz-Boz • Koz seçmek için konuşmacının boş dairesine (○) dokunun.
     </div>
 
 </div>
@@ -689,7 +695,7 @@ button {
 
 <script>
 const DEFAULT_SEATING = ["ERÇİN", "MERT", "ERGÜN", "ŞUAYİP"];
-const STORAGE_KEY = "kingState_v8_centered";
+const STORAGE_KEY = "kingState_v9_compact";
 
 const DEFAULT_STATE = {
     players: [
@@ -872,7 +878,7 @@ function renderPlayers() {
                 : `<span class="ceza-symbol" style="opacity:0.35;" title="Kalan Ceza">△</span>`;
         }
 
-        // 2 Koz Yuvarlağı (2x boyut - 52px)
+        // 2 Koz Yuvarlağı
         let kozDots = "";
         for (let i = 0; i < 2; i++) {
             if (i < koz) {
@@ -898,11 +904,9 @@ function renderPlayers() {
                 <div class="contract-count">${ceza}/3 ceza • ${koz}/2 koz</div>
                 
                 <div class="indicators-container">
-                    <!-- Üstte 2x Boyutlu Koz Daireleri (Üçgenlerin ortasına hizalı) -->
                     <div class="koz-row" title="Kozlar (●)">
                         ${kozDots}
                     </div>
-                    <!-- Altta Ceza Üçgenleri (En soldan en sağa hizalama mesafesi) -->
                     <div class="ceza-row" title="Cezalar (▲)">
                         ${cezaSymbols}
                     </div>
