@@ -147,19 +147,49 @@ button {
 .contract-count {
     color: #94a3b8;
     font-size: 11px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
-/* ÜÇGEN VE DAİRELERİN ALANI */
+/* ÜÇGEN VE 2x BOYUTLU KOZ DAİRELERİNİN MERKEZİ ALANI */
 .indicators-container {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
-    gap: 2px;
+    align-items: stretch;
     margin-top: 4px;
 }
 
-.indicator-row {
+/* 3 Üçgenin toplam genişliğine göre tam ortalayan üst satır */
+.koz-row {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.koz-dot {
+    font-size: 52px; /* 2x kat boyut */
+    color: #60a5fa;
+    user-select: none;
+    line-height: 0.9;
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.koz-dot.clickable {
+    cursor: pointer;
+}
+
+.koz-dot.clickable:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px #60a5fa);
+}
+
+/* En soldaki üçgen ile en sağdaki üçgen arasındaki referans satırı */
+.ceza-row {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 5px;
     line-height: 1;
@@ -169,22 +199,7 @@ button {
     font-size: 26px;
     color: #f59e0b;
     user-select: none;
-}
-
-.koz-dot {
-    font-size: 26px;
-    color: #60a5fa;
-    user-select: none;
-    transition: transform 0.15s ease;
-}
-
-.koz-dot.clickable {
-    cursor: pointer;
-}
-
-.koz-dot.clickable:hover {
-    transform: scale(1.22);
-    filter: drop-shadow(0 0 5px #60a5fa);
+    line-height: 1;
 }
 
 .section {
@@ -563,7 +578,7 @@ button {
     </div>
 
     <div class="footer-note">
-        King Yaz-Boz • Koz seçmek için konuşmacının altındaki boş daireye (○) dokunun.
+        King Yaz-Boz • Koz seçmek için konuşmacının büyük boş dairesine (○) dokunun.
     </div>
 
 </div>
@@ -673,13 +688,8 @@ button {
 
 
 <script>
-/* =========================================================
-   VARSAYILAN OYUNCULAR VE SAAT YÖNÜ DÜZENİ
-   Masa Oturma Düzeni (Saat Yönü): ERÇİN -> MERT -> ERGÜN -> ŞUAYİP
-========================================================= */
-
 const DEFAULT_SEATING = ["ERÇİN", "MERT", "ERGÜN", "ŞUAYİP"];
-const STORAGE_KEY = "kingState_v7_clean";
+const STORAGE_KEY = "kingState_v8_centered";
 
 const DEFAULT_STATE = {
     players: [
@@ -694,7 +704,7 @@ const DEFAULT_STATE = {
         trickless: 50,
         hearts: 30,
         queens: 100,
-        men: 30,        // 8 Erkek (kart başı 30)
+        men: 30,
         last2: 180,
         rifki: 320
     },
@@ -854,7 +864,7 @@ function renderPlayers() {
         const koz = getKozCount(index);
         const ceza = getCezaCount(index);
 
-        // Üçgenler (3 adet Ceza)
+        // 3 Ceza Üçgeni
         let cezaSymbols = "";
         for (let i = 0; i < 3; i++) {
             cezaSymbols += (i < ceza)
@@ -862,7 +872,7 @@ function renderPlayers() {
                 : `<span class="ceza-symbol" style="opacity:0.35;" title="Kalan Ceza">△</span>`;
         }
 
-        // Yuvarlaklar (2 adet Koz) - Üçgenlerle aynı boyut ve tam alt satırda
+        // 2 Koz Yuvarlağı (2x boyut - 52px)
         let kozDots = "";
         for (let i = 0; i < 2; i++) {
             if (i < koz) {
@@ -877,7 +887,6 @@ function renderPlayers() {
             }
         }
 
-        // Skor Rengi: 0 ve pozitif ise yeşil, negatif ise kırmızı
         const scoreClass = (player.score >= 0) ? "score-positive" : "score-negative";
 
         return `
@@ -889,11 +898,13 @@ function renderPlayers() {
                 <div class="contract-count">${ceza}/3 ceza • ${koz}/2 koz</div>
                 
                 <div class="indicators-container">
-                    <div class="indicator-row" title="Cezalar (▲)">
-                        ${cezaSymbols}
-                    </div>
-                    <div class="indicator-row" title="Kozlar (●)">
+                    <!-- Üstte 2x Boyutlu Koz Daireleri (Üçgenlerin ortasına hizalı) -->
+                    <div class="koz-row" title="Kozlar (●)">
                         ${kozDots}
+                    </div>
+                    <!-- Altta Ceza Üçgenleri (En soldan en sağa hizalama mesafesi) -->
+                    <div class="ceza-row" title="Cezalar (▲)">
+                        ${cezaSymbols}
                     </div>
                 </div>
             </div>
