@@ -69,66 +69,6 @@ button {
     background: #273449;
 }
 
-/* EN ÜST KÜMÜLATİF SKOR PANOSU (2x2) */
-.live-score-board {
-    background: #131924;
-    border: 1px solid #2b3647;
-    border-radius: 14px;
-    padding: 12px;
-    margin-bottom: 14px;
-}
-
-.board-title {
-    font-size: 12px;
-    font-weight: 800;
-    color: #60a5fa;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.scoreboard-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
-}
-
-.score-box {
-    background: #1a2232;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-}
-
-.score-box-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #cbd5e1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.score-box-total {
-    font-size: 24px;
-    font-weight: 900;
-    margin-top: 4px;
-}
-
-.score-positive {
-    color: #4ade80;
-}
-
-.score-negative {
-    color: #f87171;
-}
-
-.score-zero {
-    color: #94a3b8;
-}
-
 .notice {
     background: #172033;
     border: 1px solid #334155;
@@ -165,14 +105,14 @@ button {
     background: #171d27;
     border: 1px solid #2b3647;
     border-radius: 14px;
-    padding: 11px;
+    padding: 12px;
     position: relative;
     overflow: hidden;
 }
 
 .player-card.active {
     border-color: #60a5fa;
-    box-shadow: 0 0 0 1px rgba(96,165,250,.18);
+    box-shadow: 0 0 0 1px rgba(96,165,250,.25);
 }
 
 .player-header {
@@ -184,21 +124,55 @@ button {
 
 .player-name {
     font-weight: 800;
-    font-size: 15px;
+    font-size: 16px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.player-koz-selector {
+.player-score {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 5px 0 2px;
+}
+
+.score-positive {
+    color: #4ade80; /* Sıfır ve pozitifler için yeşil */
+}
+
+.score-negative {
+    color: #f87171; /* Negatifler için kırmızı */
+}
+
+.contract-count {
+    color: #94a3b8;
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+/* ÜÇGEN VE DAİRELERİN ALANI */
+.indicators-container {
     display: flex;
-    gap: 4px;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+}
+
+.indicator-row {
+    display: flex;
     align-items: center;
+    gap: 5px;
+    line-height: 1;
+}
+
+.ceza-symbol {
+    font-size: 26px;
+    color: #f59e0b;
+    user-select: none;
 }
 
 .koz-dot {
-    font-size: 22px;
-    line-height: 1;
+    font-size: 26px;
     color: #60a5fa;
     user-select: none;
     transition: transform 0.15s ease;
@@ -209,32 +183,8 @@ button {
 }
 
 .koz-dot.clickable:hover {
-    transform: scale(1.25);
-    filter: drop-shadow(0 0 4px #60a5fa);
-}
-
-.player-score {
-    font-size: 22px;
-    font-weight: 900;
-    margin: 4px 0;
-}
-
-.contract-count {
-    color: #94a3b8;
-    font-size: 11px;
-}
-
-.contract-symbols {
-    margin-top: 8px;
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    font-size: 27px;
-    line-height: 1;
-}
-
-.ceza-symbol {
-    color: #f59e0b;
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 5px #60a5fa);
 }
 
 .section {
@@ -434,8 +384,7 @@ button {
 }
 
 .text-input,
-.number-input,
-.select-input {
+.number-input {
     width: 100%;
     background: #0f172a;
     color: white;
@@ -446,8 +395,7 @@ button {
 }
 
 .text-input:focus,
-.number-input:focus,
-.select-input:focus {
+.number-input:focus {
     border-color: #60a5fa;
 }
 
@@ -560,12 +508,12 @@ button {
 .footer-note {
     text-align: center;
     color: #475569;
-    font-size: 10px;
+    font-size: 11px;
     margin: 15px 0 4px;
 }
 
 @media (max-width: 500px) {
-    .players, .scoreboard-grid, .contract-grid {
+    .players, .contract-grid {
         grid-template-columns: 1fr 1fr;
     }
     .title {
@@ -589,12 +537,6 @@ button {
             <button class="icon-btn" onclick="openSettings()">⚙️</button>
             <button class="icon-btn" onclick="confirmNewGame()">↻</button>
         </div>
-    </div>
-
-    <!-- KÜMÜLATİF CANLI SKOR PANOSU (2x2) -->
-    <div class="live-score-board">
-        <div class="board-title">Kümülatif Canlı Skor Panosu</div>
-        <div class="scoreboard-grid" id="liveScoreBoard"></div>
     </div>
 
     <div class="notice">
@@ -621,7 +563,7 @@ button {
     </div>
 
     <div class="footer-note">
-        King Yaz-Boz • Koz seçimi için konuşmacının isminin yanındaki boş yuvarlağa (○) dokunun.
+        King Yaz-Boz • Koz seçmek için konuşmacının altındaki boş daireye (○) dokunun.
     </div>
 
 </div>
@@ -737,7 +679,7 @@ button {
 ========================================================= */
 
 const DEFAULT_SEATING = ["ERÇİN", "MERT", "ERGÜN", "ŞUAYİP"];
-const STORAGE_KEY = "kingState_v6_maca7";
+const STORAGE_KEY = "kingState_v7_clean";
 
 const DEFAULT_STATE = {
     players: [
@@ -834,7 +776,6 @@ function esc(value) {
         .replaceAll("'", "&#039;");
 }
 
-/* Konuşma sırası: 1. el 0. oyuncu (Maça 7 sahibi), sonraki eller saat yönünde (1, 2, 3...) */
 function currentSpeaker() {
     return state.history.length % 4;
 }
@@ -881,39 +822,11 @@ function canSelectType(type) {
 }
 
 function render() {
-    renderLiveScoreBoard();
     renderTurn();
     renderPlayers();
     renderContracts();
     renderHistory();
     saveState();
-}
-
-function renderLiveScoreBoard() {
-    const container = document.getElementById("liveScoreBoard");
-    const cumulativeTotals = [0, 0, 0, 0];
-
-    state.history.forEach(round => {
-        if (Array.isArray(round.points)) {
-            round.points.forEach((pts, pIdx) => {
-                cumulativeTotals[pIdx] += pts;
-            });
-        }
-    });
-
-    container.innerHTML = state.players.map((player, idx) => {
-        const score = cumulativeTotals[idx];
-        let scoreClass = "score-zero";
-        if (score > 0) scoreClass = "score-positive";
-        else if (score < 0) scoreClass = "score-negative";
-
-        return `
-            <div class="score-box">
-                <div class="score-box-name">${esc(player.name)}</div>
-                <div class="score-box-total ${scoreClass}">${formatScore(score)}</div>
-            </div>
-        `;
-    }).join("");
 }
 
 function renderTurn() {
@@ -941,13 +854,15 @@ function renderPlayers() {
         const koz = getKozCount(index);
         const ceza = getCezaCount(index);
 
+        // Üçgenler (3 adet Ceza)
         let cezaSymbols = "";
         for (let i = 0; i < 3; i++) {
             cezaSymbols += (i < ceza)
-                ? `<span class="ceza-symbol">▲</span>`
-                : `<span class="ceza-symbol">△</span>`;
+                ? `<span class="ceza-symbol" title="Kullanılmış Ceza">▲</span>`
+                : `<span class="ceza-symbol" style="opacity:0.35;" title="Kalan Ceza">△</span>`;
         }
 
+        // Yuvarlaklar (2 adet Koz) - Üçgenlerle aynı boyut ve tam alt satırda
         let kozDots = "";
         for (let i = 0; i < 2; i++) {
             if (i < koz) {
@@ -962,17 +877,25 @@ function renderPlayers() {
             }
         }
 
+        // Skor Rengi: 0 ve pozitif ise yeşil, negatif ise kırmızı
+        const scoreClass = (player.score >= 0) ? "score-positive" : "score-negative";
+
         return `
             <div class="player-card ${index === speaker && !gameFinished() ? "active" : ""}">
                 <div class="player-header">
                     <div class="player-name">${esc(player.name)}</div>
-                    <div class="player-koz-selector">
+                </div>
+                <div class="player-score ${scoreClass}">${formatScore(player.score)}</div>
+                <div class="contract-count">${ceza}/3 ceza • ${koz}/2 koz</div>
+                
+                <div class="indicators-container">
+                    <div class="indicator-row" title="Cezalar (▲)">
+                        ${cezaSymbols}
+                    </div>
+                    <div class="indicator-row" title="Kozlar (●)">
                         ${kozDots}
                     </div>
                 </div>
-                <div class="player-score">${formatScore(player.score)}</div>
-                <div class="contract-count">${ceza}/3 ceza • ${koz}/2 koz</div>
-                <div class="contract-symbols">${cezaSymbols}</div>
             </div>
         `;
     }).join("");
@@ -1381,10 +1304,6 @@ function undoRound(index) {
     render();
 }
 
-/* =========================================================
-   YENİ OYUN & MAÇA 7 SEÇİMİ (1. SIRAYA YERLEŞTİRME)
-========================================================= */
-
 function confirmNewGame() {
     if (state.history.length > 0) {
         const ok = confirm("Yeni oyun başlatılsın mı?\nMevcut oyun verileri sıfırlanacaktır.");
@@ -1395,7 +1314,6 @@ function confirmNewGame() {
 
 function openMaca7Modal() {
     const container = document.getElementById("macaRadioList");
-    // Mevcut veya varsayılan oyuncu isimlerini al
     const currentNames = state.players.map(p => p.name.trim() || "Oyuncu");
 
     container.innerHTML = currentNames.map((name, idx) => `
@@ -1418,7 +1336,6 @@ function applyMaca7Selection() {
     const selectedIdx = Number(selected.value);
     const existingNames = state.players.map(p => p.name.trim());
 
-    // Seçilen oyuncuyu 1. sıraya (index 0) alıp saat yönü rotasyonunu uygula
     const reorderedNames = [];
     for (let i = 0; i < 4; i++) {
         reorderedNames.push(existingNames[(selectedIdx + i) % 4]);
@@ -1437,10 +1354,6 @@ function applyMaca7Selection() {
     closeModal("summaryModal");
     render();
 }
-
-/* =========================================================
-   AYARLAR MODALI
-========================================================= */
 
 function openSettings() {
     document.getElementById("name0").value = state.players[0].name;
@@ -1556,7 +1469,6 @@ document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
     });
 });
 
-/* İlk açılışta kayıt yoksa doğrudan Maça 7 modalını tetikle */
 if (!localStorage.getItem(STORAGE_KEY)) {
     render();
     openMaca7Modal();
